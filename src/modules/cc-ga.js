@@ -1,78 +1,62 @@
-/**
- * CookiesConsentJS 1.1
- * oxterisk@protonmail.com
- * oxterisk@proton.me
- */
+function _manageGoogleAnalytics({ lifecycle = '', cookie = '', status = false, path = '' }) {
+  const code = Object.prototype.hasOwnProperty.call(cookie, 'code') ? cookie.code : ''
+  const onLoad = !!(Object.prototype.hasOwnProperty.call(cookie, 'onLoad') && cookie.onLoad === true)
 
-function manageGoogleAnalytics({ lifecycle = '', cookie = '', status = false, path = '' }) {
-
-    const code = cookie.hasOwnProperty( 'code' ) ? cookie.code : '';
-    const onLoad = cookie.hasOwnProperty( 'onLoad' ) && cookie.onLoad === true ? true : false;
-
-    if ( code != '' ) {
-
-        switch ( lifecycle ) {
-
-            case 'first-load' :
-                if ( onLoad ) {
-                    addGoogleAnalyticsScript( code );
-                    setGoogleAnalyticsCookieStatus( code, true );
-                } else {
-                    setGoogleAnalyticsCookieStatus( code, false );
-                    cleanGoogleAnalyticsCookies( path );
-                }
-                break;
-
-            case 'load' :
-            case 'accept' :
-                if ( status ) {
-                    addGoogleAnalyticsScript( code );
-                    setGoogleAnalyticsCookieStatus( code, true );
-                } else {
-                    setGoogleAnalyticsCookieStatus( code, false );
-                    delGoogleAnalyticsScript( code );
-                    cleanGoogleAnalyticsCookies( path );
-                }
-                break;
-
-            case 'reject' :
-                setGoogleAnalyticsCookieStatus( code, false );
-                delGoogleAnalyticsScript();
-                cleanGoogleAnalyticsCookies( path );
-                break;
-
+  if (code !== '') {
+    switch (lifecycle) {
+      case 'first-load' :
+        if (onLoad) {
+          addGoogleAnalyticsScript(code)
+          setGoogleAnalyticsCookieStatus(code, true)
         }
+        else {
+          setGoogleAnalyticsCookieStatus(code, false)
+          cleanGoogleAnalyticsCookies(path)
+        }
+        break
 
-    } else {
+      case 'load' :
+      case 'accept' :
+        if (status) {
+          addGoogleAnalyticsScript(code)
+          setGoogleAnalyticsCookieStatus(code, true)
+        }
+        else {
+          setGoogleAnalyticsCookieStatus(code, false)
+          delGoogleAnalyticsScript(code)
+          cleanGoogleAnalyticsCookies(path)
+        }
+        break
 
-        console.log( `ERROR: Google Analytics code not specified` );
-
+      case 'reject' :
+        setGoogleAnalyticsCookieStatus(code, false)
+        delGoogleAnalyticsScript()
+        cleanGoogleAnalyticsCookies(path)
+        break
     }
-
+  }
+  else {
+    console.error(`ERROR: Google Analytics code not specified`)
+  }
 }
 
-function addGoogleAnalyticsScript( code = '' ) {
+function addGoogleAnalyticsScript(code = '') {
+  if (code !== '') {
+    const scriptToCheck1 = document.getElementById('cc-ga-script-1')
+    const scriptToCheck2 = document.getElementById('cc-ga-script-2')
 
-    if ( code != '' ) {
+    if (!scriptToCheck1) {
+      const script = document.createElement('script')
+      script.id = 'cc-ga-script-1'
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${code}`
+      script.async = true
+      document.head.appendChild(script)
+    }
 
-        const scriptToCheck1 = document.getElementById( 'cc-ga-script-1' );
-        const scriptToCheck2 = document.getElementById( 'cc-ga-script-2' );
-
-        if ( !scriptToCheck1 ) {
-
-            let script = document.createElement( 'script' );
-            script.id = 'cc-ga-script-1';
-            script.src = `https://www.googletagmanager.com/gtag/js?id=${code}`;
-            script.async = true;
-            document.head.appendChild( script );
-
-        }
-
-        if ( !scriptToCheck2 ) {
-
-            script = document.createElement( 'script' );
-            script.id = 'cc-ga-script-2';
-            script.innerHTML = `
+    if (!scriptToCheck2) {
+      script = document.createElement('script')
+      script.id = 'cc-ga-script-2'
+      script.innerHTML = `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -81,67 +65,54 @@ function addGoogleAnalyticsScript( code = '' ) {
             gtag('consent', 'default', {
                 'analytics_storage': 'denied'
             });
-            window['ga-disable-' + '${code}'] = true;`;
-            document.head.appendChild( script );
-
-        }
-
+            window['ga-disable-' + '${code}'] = true;`
+      document.head.appendChild(script)
     }
-
+  }
 }
 
 function delGoogleAnalyticsScript() {
+  const scriptToCheck1 = document.getElementById('cc-ga-script-1')
+  const scriptToCheck2 = document.getElementById('cc-ga-script-2')
 
-    const scriptToCheck1 = document.getElementById( 'cc-ga-script-1' );
-    const scriptToCheck2 = document.getElementById( 'cc-ga-script-2' );
-
-    if ( scriptToCheck1 ) { scriptToCheck1.remove(); }
-    if ( scriptToCheck2 ) { scriptToCheck2.remove(); }
-
+  if (scriptToCheck1)
+    scriptToCheck1.remove()
+  if (scriptToCheck2)
+    scriptToCheck2.remove()
 }
 
-function setGoogleAnalyticsCookieStatus( code = '', status = false ) {
+function setGoogleAnalyticsCookieStatus(code = '', status = false) {
+  const scriptToCheck = document.getElementById('cc-ga-script-2')
 
-    const scriptToCheck = document.getElementById( 'cc-ga-script-2' );
-
-    if ( code != '' && scriptToCheck ) {
-
-        gtag( 'set', 'allow_google_signals', status );
-        gtag( 'set', 'allow_ad_personalization_signals', status );
-        gtag( 'consent', 'update', {
-            'analytics_storage': status ? 'granted' : 'denied'
-        });
-        window['ga-disable-' + code] = !status;
-
-    }
-
+  if (code !== '' && scriptToCheck) {
+    gtag('set', 'allow_google_signals', status)
+    gtag('set', 'allow_ad_personalization_signals', status)
+    gtag('consent', 'update', {
+      analytics_storage: status ? 'granted' : 'denied',
+    })
+    window[`ga-disable-${code}`] = !status
+  }
 }
 
-function cleanGoogleAnalyticsCookies( path ) {
+function cleanGoogleAnalyticsCookies(path) {
+  const keysToRemove = (['_ga', '_gid', '__utm'])
 
-    const keysToRemove = (['_ga', '_gid', '__utm']);
+  const cookies = document.cookie
+  const ca = cookies.split(';')
+  const hostname_parts = window.location.hostname.split('.')
 
-    let cookies = document.cookie;
-    let ca = cookies.split( ";" );
-    let hostname_parts = window.location.hostname.split(".");
+  for (let i = 0; i < ca.length; i++) {
+    const key = ca[i].split('=')
 
-    for( let i = 0; i < ca.length; i++ ) {
+    for (let j = 0; j < keysToRemove.length; j++) {
+      if (key.toString().trim().startsWith(keysToRemove[j])) {
+        document.cookie = `${key[0]}="";domain=${window.location.hostname};expires=Thu, 01 Jan 1970 00:00:00 UTC;${path}`
 
-        let key = ca[i].split( "=" );
-
-        for( let j = 0; j < keysToRemove.length; j++ ) {
-
-            if ( key.toString().trim().startsWith( keysToRemove[j] ) ) {
-
-                document.cookie = `${key[0]}="";domain=${window.location.hostname};expires=Thu, 01 Jan 1970 00:00:00 UTC;${path}`;
-
-                if ( hostname_parts[0] == 'www' ) {
-                    let domain = `.${hostname_parts[1]}.${hostname_parts[2]}`;
-                    document.cookie = `${key[0]}="";domain=${domain};expires=Thu, 01 Jan 1970 00:00:00 UTC;${path}`;
-                }
-
-            }
+        if (hostname_parts[0] === 'www') {
+          const domain = `.${hostname_parts[1]}.${hostname_parts[2]}`
+          document.cookie = `${key[0]}="";domain=${domain};expires=Thu, 01 Jan 1970 00:00:00 UTC;${path}`
         }
+      }
     }
-
+  }
 }
