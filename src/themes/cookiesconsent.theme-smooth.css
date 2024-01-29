@@ -1,0 +1,45 @@
+.cc-window,
+.cc-modal-window {
+    --ccBackground: #c2e7ff;
+    --ccFontColor: #001d35;
+    --windowBg: var(--ccBackground);
+    --popupBg: var(--ccBackground);
+    --titleTextColor: var(--ccFontColor);
+    --messageTextColor: var(--ccFontColor);
+    --messageLinkColor: var(--ccFontColor);
+    --messageLinkFontWeight: 600;
+    --settingsSeparatorColor: #001d35;
+    --popupTextColor: var(--ccFontColor);
+    --btnCloseColor: var(--ccFontColor);
+    --btnCloseColorHover: #001d35;
+    --btnRadius: 50px;
+
+    --btnAcceptBg: #388E3C;
+    --btnAcceptBgHover: #1B5E20;
+    --btnAcceptTextColor: #ffffff;
+    --btnAcceptBorder: 0;
+
+    --btnRejectBg: #D32F2F;
+    --btnRejectBgHover: #B71C1C;
+    --btnRejectTextColor: #ffffff;
+    --btnRejectBorder: 0;
+
+    --btnInfoBgHover: #81D4FA;
+    --btnInfoTextColor: #00639c;
+    --btnInfoBorder: 0;
+
+    --btnSettingsBg: var(--btnInfoBg);
+    --btnSettingsBgHover: var(--btnInfoBgHover);
+    --btnSettingsTextColor: var(--btnInfoTextColor);
+    --btnSettingsBorder: 0;
+
+    --btnSettingsAcceptBg: var(--btnAcceptBg);
+    --btnSettingsAcceptBgHover: var(--btnAcceptBgHover);
+    --btnSettingsAcceptTextColor: var(--btnAcceptTextColor);
+    --btnSettingsAcceptBorder: 0;
+
+    --btnSettingsSelectBg: var(--btnInfoBg);
+    --btnSettingsSelectBgHover: var(--btnInfoBgHover);
+    --btnSettingsSelectTextColor: var(--btnInfoTextColor);
+    --btnSettingsSelectBorder: 0;
+}
