@@ -1,4 +1,4 @@
-import type { CookiesConsentParams, CookiesStatusType, LifecycleType, PositionType } from './types'
+import type { CookiesConsentParams, CookiesConsentStatusType, CookiesStatusType, LifecycleType, PositionType } from './types'
 import { manageGoogleAnalytics } from './modules/cc-ga.module'
 import { manageGoogleTagManager } from './modules/cc-gtm.module'
 
@@ -527,7 +527,7 @@ export class CookiesConsent {
     }
   }
 
-  setCookieConsent(status = '') {
+  setCookieConsent(status: CookiesConsentStatusType) {
     let expires = ''
 
     if (this.params.expirationDays > 0) {
@@ -554,14 +554,14 @@ export class CookiesConsent {
       if (value)
         document.cookie = `${key}=${btoa(`${key}:${Date.now()}`)};${expires};${this.params.path};${sameSite};`
       else
-        document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;${this.params.path}`
+        document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;${this.params.path};${sameSite};`
     })
 
     this.#answered = true
   }
 
   setCookieStatusInParams($type: CookiesStatusType) {
-    if (Object.prototype.hasOwnProperty.call(this.params, 'cookies_status')) {
+    if (this.#cookies_status) {
       if ($type === 'accept_all') {
         for (const cookie in this.#cookies_status)
           this.#cookies_status[cookie] = true
@@ -574,12 +574,10 @@ export class CookiesConsent {
         const chk_cookie: NodeListOf<HTMLInputElement> = document.querySelectorAll('.cc-window-settings-cookie-value .cc-cookie-checkbox')
 
         for (let i = 0; i < chk_cookie.length; i++) {
-          if (Object.prototype.hasOwnProperty.call(this.#cookies_status, 'chk_cookie[i].dataset.name')) {
-            const key = chk_cookie[i].dataset.name
+          const key = chk_cookie[i].dataset.name
 
-            if (key)
-              this.#cookies_status[key] = chk_cookie[i].checked
-          }
+          if (key)
+            this.#cookies_status[key] = chk_cookie[i].checked
         }
       }
     }

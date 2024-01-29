@@ -5,6 +5,7 @@ export type ButtonType = 'dismiss' | 'accept' | 'reject' | 'info' | 'settings'
 export type PositionType = 'top' | 'top-left' | 'top-right' | 'top-center' | 'bottom' | 'bottom-left' | 'bottom-right' | 'bottom-center'
 export type ButtonDismissPositionType = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 export type CookiesStatusType = 'accept_all' | 'reject_all' | 'selection'
+export type CookiesConsentStatusType = 'accept' | 'reject' | 'selection'
 export type LifecycleType = 'first-load' | 'load' | 'accept' | 'reject'
 
 export interface CookiesConsentParams {
