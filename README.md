@@ -6,10 +6,9 @@
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
 
-_description_
+## Thanks!
 
-> **Note**:
-> Replace `@metamorfosilab/cookies-consent`, `_description_` and `antfu` globally to use this template.
+Thank to original author [Oscar Oxterisk](https://github.com/oxterisk) for his work on [cookiesconsentjs](https://github.com/oxterisk/cookiesconsentjs), we just want to continue his work and make it more flexible and customizable.
 
 ## License
 
