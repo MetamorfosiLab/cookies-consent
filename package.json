@@ -6,12 +6,12 @@
   "description": "_description_",
   "author": "Roman Hrynevych <hrynevych.romann@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/MetamorfosiLab/cookies-consent#readme",
+  "homepage": "https://github.com/MetamorfosiLab/cookies-consent#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/MetamorfosiLab/cookies-consent.git"
+    "url": "git+https://github.com/MetamorfosiLab/cookies-consent.git"
   },
-  "bugs": "https://github.com/antfu/MetamorfosiLab/cookies-consent/issues",
+  "bugs": "https://github.com/MetamorfosiLab/cookies-consent/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
