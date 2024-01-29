@@ -1,5 +1,4 @@
-.cc-window,
-.cc-modal-window {
+:root {
     --ccBackground: #c2e7ff;
     --ccFontColor: #001d35;
     --windowBg: var(--ccBackground);

@@ -1,5 +1,15 @@
-function _manageGoogleTagManager({ lifecycle = '', cookie = '', status = false, path = '' }) {
-  const code = Object.prototype.hasOwnProperty.call(cookie, 'code') ? cookie.code : ''
+import type { LifecycleType } from '../types'
+import type { Cookie } from '../types/cookie.types'
+
+interface ManageGoogleTagManagerParams {
+  lifecycle: LifecycleType
+  cookie: Cookie
+  status?: boolean
+  path?: string
+}
+
+export function manageGoogleTagManager({ lifecycle, cookie, status = false, path = '' }: ManageGoogleTagManagerParams) {
+  const code = cookie.code ?? ''
 
   if (code !== '') {
     switch (lifecycle) {
@@ -32,7 +42,7 @@ function addGoogleTagManagerScript(code = '') {
     const scriptToCheck2 = document.getElementById('cc-gtm-script-2')
 
     if (!scriptToCheck1) {
-      script = document.createElement('script')
+      const script = document.createElement('script')
       script.id = 'cc-gtm-script-1'
       script.innerHTML = `
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -44,7 +54,7 @@ function addGoogleTagManagerScript(code = '') {
     }
 
     if (!scriptToCheck2) {
-      noscript = document.createElement('noscript')
+      const noscript = document.createElement('noscript')
       noscript.id = 'cc-gtm-script-2'
       noscript.innerHTML = `
                 <iframe src="https://www.googletagmanager.com/ns.html?id=${code}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
@@ -69,7 +79,7 @@ function delGoogleTagManagerScript() {
     scriptToCheck4.remove()
 }
 
-function cleanGoogleTagManagerCookies(path) {
+function cleanGoogleTagManagerCookies(path: string) {
   const keysToRemove = (['_ga', '_gid', '__utm'])
 
   const cookies = document.cookie

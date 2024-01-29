@@ -1,6 +1,17 @@
-function _manageGoogleAnalytics({ lifecycle = '', cookie = '', status = false, path = '' }) {
-  const code = Object.prototype.hasOwnProperty.call(cookie, 'code') ? cookie.code : ''
-  const onLoad = !!(Object.prototype.hasOwnProperty.call(cookie, 'onLoad') && cookie.onLoad === true)
+import type { LifecycleType } from '../types'
+import type { Cookie } from '../types/cookie.types'
+
+interface ManageGoogleAnalyticsParams {
+  lifecycle: LifecycleType
+  cookie: Cookie
+  status?: boolean
+  path?: string
+}
+
+export function manageGoogleAnalytics({ lifecycle, cookie, status = false, path = '',
+}: ManageGoogleAnalyticsParams) {
+  const code = cookie.code ?? ''
+  const onLoad = cookie.onLoad ?? false
 
   if (code !== '') {
     switch (lifecycle) {
@@ -23,7 +34,7 @@ function _manageGoogleAnalytics({ lifecycle = '', cookie = '', status = false, p
         }
         else {
           setGoogleAnalyticsCookieStatus(code, false)
-          delGoogleAnalyticsScript(code)
+          delGoogleAnalyticsScript()
           cleanGoogleAnalyticsCookies(path)
         }
         break
@@ -54,7 +65,7 @@ function addGoogleAnalyticsScript(code = '') {
     }
 
     if (!scriptToCheck2) {
-      script = document.createElement('script')
+      const script = document.createElement('script')
       script.id = 'cc-ga-script-2'
       script.innerHTML = `
             window.dataLayer = window.dataLayer || [];
@@ -90,11 +101,13 @@ function setGoogleAnalyticsCookieStatus(code = '', status = false) {
     gtag('consent', 'update', {
       analytics_storage: status ? 'granted' : 'denied',
     })
+
+    // @ts-expect-error - need more time to figure out how to fix this
     window[`ga-disable-${code}`] = !status
   }
 }
 
-function cleanGoogleAnalyticsCookies(path) {
+function cleanGoogleAnalyticsCookies(path: string) {
   const keysToRemove = (['_ga', '_gid', '__utm'])
 
   const cookies = document.cookie
