@@ -9,6 +9,7 @@ lib-cov
 logs
 node_modules
 temp
+cache
 
 # Logs
 npm-debug.log*

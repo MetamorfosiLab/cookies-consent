@@ -45,7 +45,10 @@
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "docs:dev": "pnpm -F=docs dev",
+    "docs:build": "pnpm -F=docs build",
+    "docs:preview": "pnpm -F=docs preview"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.2",
