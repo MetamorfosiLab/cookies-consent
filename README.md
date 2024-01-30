@@ -10,6 +10,10 @@
 
 You can easily customize the design by changing the theme or creating a new one and it is ready to use with **Google Analytics** and **Google Tag Manager**.
 
+# Documentation
+
+[Link ❤️](https://metamorfosilab.github.io/cookies-consent/)
+
 # Basic usage
 
 ```bash
