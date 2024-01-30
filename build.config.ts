@@ -4,6 +4,14 @@ export default defineBuildConfig({
   entries: [
     'src/index',
     {
+      builder: 'rollup',
+      input: 'src/modules/cc-ga.ts',
+    },
+    {
+      builder: 'rollup',
+      input: 'src/modules/cc-gtm.ts',
+    },
+    {
       builder: 'mkdist',
       input: './src/styles/',
       outDir: './dist/styles/',

@@ -1,13 +1,20 @@
-import type { CookiesConsentParams, CookiesConsentStatusType, CookiesStatusType, LifecycleType, PositionType } from './types'
-import { manageGoogleAnalytics } from './modules/cc-ga.module'
-import { manageGoogleTagManager } from './modules/cc-gtm.module'
+import type {
+  CookiesConsentParams,
+  CookiesConsentStatusType,
+  CookiesStatusType,
+  CustomCookiePreferences,
+  LifecycleType,
+  PositionType,
+} from './types'
+import { manageGoogleAnalytics } from './modules/cc-ga'
+import { manageGoogleTagManager } from './modules/cc-gtm'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
   private availablePositions: PositionType[]
 
   #answered = false
-  #cookies_status: { [key: string]: boolean } = {}
+  #cookies_status: CustomCookiePreferences = {}
 
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
@@ -28,20 +35,9 @@ export class CookiesConsent {
   }
 
   isPageAllowedToShowConsent() {
-    let allowed = true
+    const url = window.location.pathname
 
-    if (this.params.ignorePages) {
-      const url = window.location.pathname
-
-      this.params.ignorePages.forEach(
-        (page) => {
-          if (page !== '' && url.includes(page))
-            allowed = false
-        },
-      )
-    }
-
-    return allowed
+    return this.params.ignorePages?.some(page => url !== '' && url.includes(page)) ?? true
   }
 
   answeredConsent() {
@@ -68,8 +64,7 @@ export class CookiesConsent {
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].split('=')
 
-      if (Object.prototype.hasOwnProperty.call(this.#cookies_status, 'cookie[0]'))
-        this.#cookies_status[cookie[0]] = true
+      this.#cookies_status[cookie[0]] = true
     }
   }
 
@@ -105,7 +100,7 @@ export class CookiesConsent {
       info: '',
     }
 
-    if (Object.prototype.hasOwnProperty.call(this.params, 'content')) {
+    if (this.params?.content) {
       this.params.content.title = this.params.content.title ?? content_default.title
       this.params.content.message = this.params.content.message ?? content_default.message
       this.params.content.info = this.params.content.info ?? content_default.info
@@ -133,7 +128,7 @@ export class CookiesConsent {
       if (!cc_window) {
         // Position
         const positionCss = `cc-pos-${this.params.position}`
-        const contentAlign = `cc-content-${this.params.content.align}`
+        const contentAlign = `cc-content-${this.params.content?.align}`
         let positionInsert: InsertPosition = 'afterbegin'
 
         if (this.params.position === 'bottom' || this.params.position === 'bottom-right' || this.params.position === 'bottom-left' || this.params.position === 'bottom-center')
@@ -145,13 +140,13 @@ export class CookiesConsent {
         // Policy link
         let policy = ''
 
-        if (this.params.content.policy !== '' && this.params.content.policyLink !== '')
-          policy = `<a href="${this.params.content.policyLink}" target="_blank">${this.params.content.policy}</a>`
+        if (this.params.content?.policy !== '' && this.params.content?.policyLink !== '')
+          policy = `<a href="${this.params.content?.policyLink}" target="_blank">${this.params.content?.policy}</a>`
 
         const content = `
                 <div class="cc-window-content">
-                    <div class="cc-window-title">${this.params.content.title}</div>
-                    <div class="cc-window-message">${this.params.content.message} <span class="cc-window-policy">${policy}</span></div>
+                    <div class="cc-window-title">${this.params.content?.title}</div>
+                    <div class="cc-window-message">${this.params.content?.message} <span class="cc-window-policy">${policy}</span></div>
                     <div class="cc-window-buttons">${buttons}</div>
                 </div>`
 
@@ -175,20 +170,20 @@ export class CookiesConsent {
   }
 
   getHtmlButtons() {
-    if (Object.prototype.hasOwnProperty.call(this.params, 'buttons')) {
+    if (this.params?.buttons) {
       if (Array.isArray(this.params.buttons)) {
         let html = ''
 
         this.params.buttons.forEach(
           (button) => {
             if (button === 'accept')
-              html += `<button type="button" id="cc-btn-accept" class="cc-btn-accept">${this.params.content.btnAccept}</button>`
+              html += `<button type="button" id="cc-btn-accept" class="cc-btn-accept">${this.params.content?.btnAccept}</button>`
             else if (button === 'reject')
-              html += `<button type="button" id="cc-btn-reject" class="cc-btn-reject">${this.params.content.btnReject}</button>`
+              html += `<button type="button" id="cc-btn-reject" class="cc-btn-reject">${this.params.content?.btnReject}</button>`
             else if (button === 'info')
-              html += `<button type="button" id="cc-btn-info" class="cc-btn-info">${this.params.content.btnInfo}</button>`
+              html += `<button type="button" id="cc-btn-info" class="cc-btn-info">${this.params.content?.btnInfo}</button>`
             else if (button === 'settings')
-              html += `<button type="button" id="cc-btn-settings" class="cc-btn-info">${this.params.content.btnSettings}</button>`
+              html += `<button type="button" id="cc-btn-settings" class="cc-btn-info">${this.params.content?.btnSettings}</button>`
           },
 
         )
@@ -197,7 +192,7 @@ export class CookiesConsent {
       }
     }
 
-    return `<button type="button" id="cc-btn-accept" class="cc-btn-accept">${this.params.content.btnAccept}</button>`
+    return `<button type="button" id="cc-btn-accept" class="cc-btn-accept">${this.params.content?.btnAccept}</button>`
   }
 
   removeHtmlMessage() {
@@ -251,7 +246,7 @@ export class CookiesConsent {
         const dismissButton = document.createElement('div')
         dismissButton.id = 'cc-btn-dismiss'
         dismissButton.classList.add(positionCss)
-        dismissButton.innerHTML = this.params.content.btnDismiss ?? ''
+        dismissButton.innerHTML = this.params.content?.btnDismiss ?? ''
 
         document.body.insertAdjacentElement(positionInsert, dismissButton)
 
@@ -268,7 +263,7 @@ export class CookiesConsent {
   }
 
   showhideInfo() {
-    if (this.params.content.info !== '') {
+    if (this.params.content?.info) {
       const divInfo = document.createElement('div')
       divInfo.innerHTML = this.params.content.info ?? ''
 
@@ -280,9 +275,9 @@ export class CookiesConsent {
     const divCookieSettings = document.createElement('div')
     divCookieSettings.className = 'cc-window-settings-cookies'
 
-    this.params.hideDescription = !(Object.prototype.hasOwnProperty.call(this.params, 'hideDescription') && !this.params.hideDescription)
+    this.params.hideDescription = Boolean(this.params.hideDescription ?? true)
 
-    if (Object.prototype.hasOwnProperty.call(this.params.content, 'settingsHeader') && this.params.content.settingsHeader !== '') {
+    if (this.params.content?.settingsHeader) {
       const divHeader = document.createElement('div')
       divHeader.className = 'cc-window-settings-header'
       divHeader.innerHTML = this.params.content.settingsHeader ?? ''
@@ -299,12 +294,12 @@ export class CookiesConsent {
       const divCookieContent = document.createElement('div')
       divCookieContent.className = 'cc-window-settings-cookie-content'
 
-      if (Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'title')) {
+      if (this.params.cookies[cookie]?.title) {
         const divTitle = document.createElement('div')
         divTitle.className = 'cc-window-settings-cookie-title'
         divTitle.innerHTML = `${this.params.cookies[cookie].title}`
 
-        if (Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'description') && this.params.cookies[cookie].description !== '' && this.params.hideDescription) {
+        if (this.params.cookies[cookie]?.description && this.params.hideDescription) {
           divTitle.innerHTML += ` <div id="cc-window-icon-dropdown-id-${elem_id}">&#10095;</div>`
           divTitle.classList.add('cc-window-settings-cookie-title-dropdown')
 
@@ -316,13 +311,12 @@ export class CookiesConsent {
         divCookieContent.appendChild(divTitle)
       }
 
-      if (Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'description') && this.params.cookies[cookie].description !== '') {
+      if (this.params.cookies[cookie]?.description) {
         const divDescription = document.createElement('div')
         divDescription.id = `cc-window-desc-id-${elem_id}`
         divDescription.className = 'cc-window-settings-cookie-desc'
 
-        if (Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'title') && this.params.cookies[cookie].title !== '' && this.params.hideDescription)
-
+        if (this.params.cookies[cookie]?.title && this.params.hideDescription)
           divDescription.style.display = 'none'
 
         divDescription.innerHTML = this.params.cookies[cookie].description ?? ''
@@ -333,16 +327,12 @@ export class CookiesConsent {
 
       let checked = ''
 
-      if (this.#answered) {
-        if (Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'name'))
+      if (this.#answered && this.params.cookies[cookie]?.name)
+        checked = this.#cookies_status[this.params.cookies[cookie].name] ? ' checked="checked"' : ''
+      else
+        checked = this.params.cookies[cookie].checked ? ' checked="checked"' : ''
 
-          checked = Object.prototype.hasOwnProperty.call(this.#cookies_status, 'this.params.cookies[cookie].name') && this.#cookies_status[this.params.cookies[cookie].name] ? ' checked="checked"' : ''
-      }
-      else {
-        checked = Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'checked') && this.params.cookies[cookie].checked ? ' checked="checked"' : ''
-      }
-
-      const disabled = Object.prototype.hasOwnProperty.call(this.params.cookies[cookie], 'disabled') && this.params.cookies[cookie].disabled && checked !== '' ? ' disabled="disabled"' : ''
+      const disabled = this.params.cookies[cookie].disabled && checked !== '' ? ' disabled="disabled"' : ''
 
       const divStatus = document.createElement('div')
       divStatus.className = 'cc-window-settings-cookie-value'
@@ -357,9 +347,9 @@ export class CookiesConsent {
       const btnSettingsUnselectAll = 'Unselect all'
       const btnSettingsAccept = 'Accept selection'
 
-      this.params.content.btnSettingsSelectAll = Object.prototype.hasOwnProperty.call(this.params.content, 'btnSettingsSelectAll') ? this.params.content.btnSettingsSelectAll : btnSettingsSelectAll
-      this.params.content.btnSettingsUnselectAll = Object.prototype.hasOwnProperty.call(this.params.content, 'btnSettingsUnselectAll') ? this.params.content.btnSettingsUnselectAll : btnSettingsUnselectAll
-      this.params.content.btnSettingsAccept = Object.prototype.hasOwnProperty.call(this.params.content, 'btnSettingsAccept') ? this.params.content.btnSettingsAccept : btnSettingsAccept
+      this.params.content.btnSettingsSelectAll = this.params.content.btnSettingsSelectAll ?? btnSettingsSelectAll
+      this.params.content.btnSettingsUnselectAll = this.params.content.btnSettingsUnselectAll ?? btnSettingsUnselectAll
+      this.params.content.btnSettingsAccept = this.params.content.btnSettingsAccept ?? btnSettingsAccept
 
       const divButtons = document.createElement('div')
       divButtons.className = 'cc-window-settings-buttons'
@@ -369,7 +359,7 @@ export class CookiesConsent {
       divCookieSettings.appendChild(divButtons)
     }
 
-    if (Object.prototype.hasOwnProperty.call(this.params.content, 'settingsFooter') && this.params.content.settingsFooter !== '') {
+    if (this.params.content.settingsFooter) {
       const divFooter = document.createElement('div')
       divFooter.className = 'cc-window-settings-footer'
       divFooter.innerHTML = this.params.content.settingsFooter ?? ''
@@ -540,13 +530,11 @@ export class CookiesConsent {
 
     let sameSite = 'SameSite=Lax'
 
-    if (Object.prototype.hasOwnProperty.call(this.params, 'sameSite')) {
-      if (this.params.sameSite === 'none')
-        sameSite = 'SameSite=None;Secure'
+    if (this.params.sameSite === 'none')
+      sameSite = 'SameSite=None;Secure'
 
-      if (this.params.sameSite === 'strict')
-        sameSite = 'SameSite=Strict'
-    }
+    if (this.params.sameSite === 'strict')
+      sameSite = 'SameSite=Strict'
 
     document.cookie = `consentcookies_status=${value};${expires};${this.params.path};${sameSite};`
 
@@ -585,13 +573,11 @@ export class CookiesConsent {
 
   callbackFunction(type: LifecycleType) {
     // BEGIN: Google Analytics callbacks
-
-    if (Object.prototype.hasOwnProperty.call(this.params.cookies, 'cc_ga')) {
-      const status = !!(Object.prototype.hasOwnProperty.call(this.params, 'cookies_status') && Object.prototype.hasOwnProperty.call(this.#cookies_status, 'cc_ga') && this.#cookies_status.cc_ga === true)
+    if (this.params.cookies?.cc_ga) {
+      const status = Boolean(this.#cookies_status?.cc_ga === true)
 
       try {
-        if (this.params.cookies?.cc_ga)
-          manageGoogleAnalytics({ lifecycle: type, cookie: this.params.cookies.cc_ga, status, path: this.params.path })
+        manageGoogleAnalytics({ lifecycle: type, cookie: this.params.cookies.cc_ga, status, path: this.params.path })
       }
       catch (err) {
         console.error(`ERROR: cc-ga.js script not loaded`)
@@ -602,12 +588,11 @@ export class CookiesConsent {
 
     // BEGIN: Google Tag Manager callbacks
 
-    if (Object.prototype.hasOwnProperty.call(this.params.cookies, 'cc_gtm')) {
-      const status = !!(Object.prototype.hasOwnProperty.call(this.params, 'cookies_status') && Object.prototype.hasOwnProperty.call(this.#cookies_status, 'cc_gtm') && this.#cookies_status.cc_gtm === true)
+    if (this.params.cookies?.cc_gtm) {
+      const status = Boolean(this.#cookies_status?.cc_gtm === true)
 
       try {
-        if (this.params.cookies?.cc_gtm)
-          manageGoogleTagManager({ lifecycle: type, cookie: this.params.cookies.cc_gtm, status })
+        manageGoogleTagManager({ lifecycle: type, cookie: this.params.cookies.cc_gtm, status })
       }
       catch (err) {
         console.error(`ERROR: cc-gtm.js script not loaded`)
@@ -616,7 +601,7 @@ export class CookiesConsent {
 
     // END: Google Tag Manager callbacks
 
-    if (type === 'first-load' && Object.prototype.hasOwnProperty.call(this.params, 'callback') && Object.prototype.hasOwnProperty.call(this.params.callback, 'first_load')) {
+    if (type === 'first-load' && this.params.callback?.first_load) {
       try {
         const firstLoad = this.params.callback?.first_load
 
@@ -627,7 +612,7 @@ export class CookiesConsent {
         console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
       }
     }
-    else if (type === 'load' && Object.prototype.hasOwnProperty.call(this.params, 'callback') && Object.prototype.hasOwnProperty.call(this.params.callback, 'load')) {
+    else if (type === 'load' && this.params.callback?.load) {
       try {
         const load = this.params.callback?.load
 
@@ -638,7 +623,7 @@ export class CookiesConsent {
         console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
       }
     }
-    else if (type === 'accept' && Object.prototype.hasOwnProperty.call(this.params, 'callback') && Object.prototype.hasOwnProperty.call(this.params.callback, 'accept')) {
+    else if (type === 'accept' && this.params.callback?.accept) {
       try {
         const accept = this.params.callback?.accept
 
@@ -649,7 +634,7 @@ export class CookiesConsent {
         console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
       }
     }
-    else if (type === 'reject' && Object.prototype.hasOwnProperty.call(this.params, 'callback') && Object.prototype.hasOwnProperty.call(this.params.callback, 'reject')) {
+    else if (type === 'reject' && this.params.callback?.reject) {
       try {
         const reject = this.params.callback?.reject
 

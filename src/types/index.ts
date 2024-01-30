@@ -27,9 +27,15 @@ export interface CookiesConsentParams {
   cookies?: { [key: string]: Cookie }
 
   callback?: {
-    first_load?: (params: { [key: string]: boolean }) => void
-    accept?: (params: { [key: string]: boolean }) => void
-    reject?: (params: { [key: string]: boolean }) => void
-    load?: (params: { [key: string]: boolean }) => void
+    first_load?: (params: CustomCookiePreferences) => void
+    accept?: (params: CustomCookiePreferences) => void
+    reject?: (params: CustomCookiePreferences) => void
+    load?: (params: CustomCookiePreferences) => void
   }
+}
+
+export interface CustomCookiePreferences {
+  [key: string]: boolean | undefined
+  cc_ga?: boolean
+  cc_gtm?: boolean
 }
