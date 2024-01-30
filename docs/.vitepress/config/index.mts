@@ -4,6 +4,8 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Cookies Consent',
   description: 'A Cookies Consent Generator Docs',
+  base: '/cookies-consent/',
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
