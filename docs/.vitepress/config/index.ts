@@ -58,8 +58,8 @@ function nav(): DefaultTheme.NavItem[] {
       text: pkg.version,
       items: [
         {
-          text: 'Changelog',
-          link: 'https://github.com/vuejs/vitepress/blob/main/CHANGELOG.md',
+          text: 'Releases',
+          link: 'https://github.com/MetamorfosiLab/cookies-consent/releases/',
         },
       ],
     },
