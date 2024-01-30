@@ -1,12 +1,13 @@
 {
   "name": "docs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev --port 5177",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
   "devDependencies": {
+    "@metamorfosilab/cookies-consent": "workspace:*",
     "vitepress": "1.0.0-rc.40"
   }
 }

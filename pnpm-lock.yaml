@@ -65,6 +65,9 @@ importers:
 
   docs:
     devDependencies:
+      '@metamorfosilab/cookies-consent':
+        specifier: workspace:*
+        version: link:..
       vitepress:
         specifier: 1.0.0-rc.40
         version: 1.0.0-rc.40(@algolia/client-search@4.22.1)(@types/node@20.10.7)(postcss@8.4.33)(search-insights@2.13.0)(typescript@5.3.3)
