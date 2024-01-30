@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.11",
   "packageManager": "pnpm@8.14.0",
-  "description": "_description_",
+  "description": "Plugin for generating a cookie consent banner for your website",
   "author": "Roman Hrynevych <hrynevych.romann@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/MetamorfosiLab/cookies-consent#readme",
@@ -12,7 +12,11 @@
     "url": "git+https://github.com/MetamorfosiLab/cookies-consent.git"
   },
   "bugs": "https://github.com/MetamorfosiLab/cookies-consent/issues",
-  "keywords": [],
+  "keywords": [
+    "cookies",
+    "consent",
+    "banner"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -21,7 +25,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typesVersions": {
@@ -42,7 +46,6 @@
     "lint": "eslint .",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
-    "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks",
