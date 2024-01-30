@@ -669,10 +669,3 @@ export class CookiesConsent {
     }
   }
 }
-
-export function CookiesConsentJS(params = {
-  expirationDays: 365,
-  content: {},
-}) {
-  return new CookiesConsent(params)
-}
