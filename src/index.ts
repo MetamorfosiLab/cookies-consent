@@ -4,21 +4,18 @@ import type {
   CookiesStatusType,
   CustomCookiePreferences,
   LifecycleType,
-  PositionType,
 } from './types'
 import { manageGoogleAnalytics } from './modules/cc-ga'
 import { manageGoogleTagManager } from './modules/cc-gtm'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
-  private availablePositions: PositionType[]
 
   #answered = false
   #cookies_status: CustomCookiePreferences = {}
 
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
-    this.availablePositions = ['top', 'top-left', 'top-right', 'top-center', 'bottom', 'bottom-left', 'bottom-right', 'bottom-center']
     this.checkParameters()
 
     if (this.isPageAllowedToShowConsent()) {
