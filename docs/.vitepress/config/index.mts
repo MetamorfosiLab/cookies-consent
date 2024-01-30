@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'Cookies Consent',
-  description: 'A Cookies Consent Generator Docs',
+  description: 'A Cookies Consent Generator Docs 🍪',
   base: '/cookies-consent/',
 
   themeConfig: {
