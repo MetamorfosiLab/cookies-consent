@@ -75,6 +75,16 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { text: 'Getting Started', link: 'getting-started' },
       ],
     },
+    {
+      text: 'Themes',
+      collapsed: false,
+      items: [
+        { text: 'Default', link: 'theme-default' },
+        { text: 'Dark', link: 'theme-dark' },
+        { text: 'Smooth', link: 'theme-smooth' },
+        { text: 'Contrast', link: 'theme-contrast' },
+      ],
+    },
     // {
     //   text: 'Writing',
     //   collapsed: false,

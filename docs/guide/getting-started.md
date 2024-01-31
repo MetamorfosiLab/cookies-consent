@@ -27,3 +27,45 @@ $ bun add @metamorfosilab/cookies-consent
 ```
 
 :::
+
+## Usage
+
+### Linking styles
+
+Cookies Consent comes with a default stylesheet that you can include in your project.
+
+::: code-group
+
+```postcss [postcss]
+@import '@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+```
+
+```scss [scss]
+@import '~@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+```
+
+```css [css]
+@import '@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+```
+
+:::
+
+Also, you can import predefined themes. There are three themes available: [contrast](./theme-contrast.md), [dark](./theme-dark.md), and [smooth](./theme-smooth.md).
+
+### Importing the library
+
+You can import the library in your project using the following syntax:
+
+```js
+import { CookiesConsent } from '@metamorfosilab/cookies-consent'
+```
+
+### Creating a new instance
+
+To create a new instance of the library, you need to pass a configuration object to the constructor.
+
+```js
+const cookiesConsent = new CookiesConsent({
+  // Configuration object
+})
+```
