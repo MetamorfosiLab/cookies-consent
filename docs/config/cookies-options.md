@@ -4,7 +4,7 @@
 
 Configure custom cookies to be displayed in the cookies settings window.
 
-## Key
+## name
 
 - **Type:** `string`
 
