@@ -23,7 +23,7 @@ export default defineConfig({
 
     sidebar: {
       '/guide/': { base: '/guide/', items: sidebarGuide() },
-      // '/reference/': { base: '/reference/', items: sidebarReference() }
+      '/config/': { base: '/config/', items: sidebarGuide() },
     },
 
     socialLinks: [
@@ -49,11 +49,11 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/guide/getting-started',
       activeMatch: '/guide/',
     },
-    // {
-    //   text: 'Reference',
-    //   link: '/reference/site-config',
-    //   activeMatch: '/reference/'
-    // },
+    {
+      text: 'Config',
+      link: '/config/shared-options',
+      activeMatch: '/config/',
+    },
     {
       text: pkg.version,
       items: [
@@ -70,14 +70,21 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'Introduction',
-      collapsed: false,
+      base: '/guide/',
       items: [
         { text: 'Getting Started', link: 'getting-started' },
       ],
     },
     {
+      text: 'Config',
+      base: '/config/',
+      items: [
+        { text: 'Shared Options', link: 'shared-options' },
+      ],
+    },
+    {
       text: 'Themes',
-      collapsed: false,
+      base: '/guide/',
       items: [
         { text: 'Default', link: 'theme-default' },
         { text: 'Dark', link: 'theme-dark' },
@@ -85,18 +92,6 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { text: 'Contrast', link: 'theme-contrast' },
       ],
     },
-    // {
-    //   text: 'Writing',
-    //   collapsed: false,
-    //   items: [
-    //     { text: 'Markdown Extensions', link: 'markdown' },
-    //     { text: 'Asset Handling', link: 'asset-handling' },
-    //     { text: 'Frontmatter', link: 'frontmatter' },
-    //     { text: 'Using Vue in Markdown', link: 'using-vue' },
-    //     { text: 'Internationalization', link: 'i18n' }
-    //   ]
-    // },
-    // { text: 'Config & API Reference', base: '/reference/', link: 'site-config' }
   ]
 }
 
