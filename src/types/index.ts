@@ -7,6 +7,7 @@ export type ButtonDismissPositionType = 'top-left' | 'top-right' | 'bottom-left'
 export type CookiesStatusType = 'accept_all' | 'reject_all' | 'selection'
 export type CookiesConsentStatusType = 'accept' | 'reject' | 'selection'
 export type LifecycleType = 'first-load' | 'load' | 'accept' | 'reject'
+export type AnalyticsType = 'cc_ga' | 'cc_gtm'
 
 // #region CookiesInterface
 /**
