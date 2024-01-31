@@ -19,23 +19,24 @@ export class CookiesConsent {
     this.params = params ?? {}
     this.checkParameters()
 
-    if (this.isPageAllowedToShowConsent()) {
-      if (!this.answeredConsent()) {
-        this.printHtmlMessage()
-        this.callbackFunction('first-load')
-      }
-      else {
-        this.checkCookies()
-        this.printDismissButton()
-        this.callbackFunction('load')
-      }
+    if (!this.isPageAllowedToShowConsent())
+      return
+
+    if (!this.answeredConsent()) {
+      this.printHtmlMessage()
+      this.callbackFunction('first-load')
+    }
+    else {
+      this.checkCookies()
+      this.printDismissButton()
+      this.callbackFunction('load')
     }
   }
 
   isPageAllowedToShowConsent() {
     const url = window.location.pathname
 
-    return this.params.ignorePages?.some(page => url !== '' && url.includes(page)) ?? true
+    return !this.params.ignorePages?.some(page => url !== '' && url.includes(page)) ?? true
   }
 
   answeredConsent() {
@@ -82,7 +83,6 @@ export class CookiesConsent {
     this.params.btnDismissPosition = this.params.btnDismissPosition ?? 'bottom-left'
     this.params.expirationDays = this.params.expirationDays ?? 0
     this.params.animation = this.params.animation ?? true
-
     this.params.path = this.params.path ?? 'path=/'
 
     if (this.params?.content) {
