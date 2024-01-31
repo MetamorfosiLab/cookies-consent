@@ -1,6 +1,7 @@
 import '../assets/css/style.css'
 import { CookiesConsent } from '../index'
 
+// #region callbacks
 const cookiesConsent = new CookiesConsent({
   expirationDays: 182, // half year
   buttons: ['accept', 'settings', 'reject'],
@@ -23,6 +24,7 @@ const cookiesConsent = new CookiesConsent({
   `,
   },
 
+  // #region cookies
   cookies: {
     essential_cookie: {
       name: 'essential_cookie',
@@ -33,25 +35,16 @@ const cookiesConsent = new CookiesConsent({
       </p>
       `,
     },
-    analytics_cookie: {
-      name: 'analytics_cookie',
-      title: 'Analytics Cookies',
-      description: `
-      <p>
-        These cookies help us improve or optimise the experience we provide. They allow us to measure how visitors interact with the Site and we use this information to improve the user experience and performance of the Site.
-        <br />
-        These cookies are used to collect technical information such as how many messages you send, how many times you open the Site, when you connect to third party services, and other key events
-      </p>
-      `,
-    },
     cc_ga: {
       name: 'cc_ga',
       title: 'Google Analytics',
       description: '<p>GA Cookies 🍪.</p>',
-      code: 'G-SNGNJYXMJJ',
+      code: 'G-XXXXXXXXXX',
     },
   },
+  // #endregion cookies
 })
+// #endregion callbacks
 
 const cookieSettings = document.querySelector('#cookie-settings')
 cookieSettings?.addEventListener('click', () => {

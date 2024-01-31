@@ -8,6 +8,40 @@ export type CookiesStatusType = 'accept_all' | 'reject_all' | 'selection'
 export type CookiesConsentStatusType = 'accept' | 'reject' | 'selection'
 export type LifecycleType = 'first-load' | 'load' | 'accept' | 'reject'
 
+// #region CookiesInterface
+/**
+ * Define a type to represent custom cookies in the cookies settings window.
+ */
+export interface Cookies {
+  /**
+   * Custom cookies can be added using their respective names as keys.
+   * The values are instances of the `Cookie` type.
+   */
+  [key: string]: Cookie
+}
+// #endregion CookiesInterface
+
+// #region CookiesStatusInterface
+/**
+ * Define a type to represent the status of custom cookies.
+ */
+export interface CookiesStatus {
+  /**
+   * Status of each custom cookie, identified by their respective names.
+   * The values are boolean flags indicating whether the cookie is accepted or rejected.
+   */
+  [key: keyof Cookies]: boolean | undefined
+}
+// #endregion CookiesStatusInterface
+
+export interface Callback {
+  first_load?: (params: CookiesStatus) => void
+  accept?: (params: CookiesStatus) => void
+  reject?: (params: CookiesStatus) => void
+  load?: (params: CookiesStatus) => void
+}
+
+// #region params
 export interface CookiesConsentParams {
   expirationDays: number
   path?: string
@@ -23,18 +57,8 @@ export interface CookiesConsentParams {
 
   content: Content
 
-  cookies?: { [key: string]: Cookie }
+  cookies?: Cookies
 
-  callback?: {
-    first_load?: (params: CustomCookiePreferences) => void
-    accept?: (params: CustomCookiePreferences) => void
-    reject?: (params: CustomCookiePreferences) => void
-    load?: (params: CustomCookiePreferences) => void
-  }
+  callback?: Callback
 }
-
-export interface CustomCookiePreferences {
-  [key: string]: boolean | undefined
-  cc_ga?: boolean
-  cc_gtm?: boolean
-}
+// #endregion params

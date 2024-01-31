@@ -78,3 +78,7 @@ const cookiesConsent = new CookiesConsent({
   // Configuration object
 })
 ```
+
+## Example
+
+<<< ../../src/examples/main.ts#callbacks

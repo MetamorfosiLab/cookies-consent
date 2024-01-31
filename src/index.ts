@@ -1,18 +1,19 @@
 import type {
   CookiesConsentParams,
   CookiesConsentStatusType,
+  CookiesStatus,
   CookiesStatusType,
-  CustomCookiePreferences,
   LifecycleType,
 } from './types'
 import { manageGoogleAnalytics } from './modules/cc-ga'
 import { manageGoogleTagManager } from './modules/cc-gtm'
+import { contentDefault } from './shared/content-default'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
 
   #answered = false
-  #cookies_status: CustomCookiePreferences = {}
+  #cookies_status: CookiesStatus = {}
 
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
@@ -84,34 +85,21 @@ export class CookiesConsent {
 
     this.params.path = this.params.path ?? 'path=/'
 
-    const content_default = {
-      title: 'Cookies compliance',
-      message: 'We use cookies',
-      policy: '',
-      btnAccept: 'Accept all',
-      btnReject: 'Reject all',
-      btnDismiss: 'Cookies policy',
-      btnInfo: 'Details',
-      btnSettings: 'Settings',
-      content_align: 'left',
-      info: '',
-    }
-
     if (this.params?.content) {
-      this.params.content.title = this.params.content.title ?? content_default.title
-      this.params.content.message = this.params.content.message ?? content_default.message
-      this.params.content.info = this.params.content.info ?? content_default.info
-      this.params.content.policy = this.params.content.policy ?? content_default.policy
-      this.params.content.btnDismiss = this.params.content.btnDismiss ?? content_default.btnDismiss
+      this.params.content.title = this.params.content.title ?? contentDefault.title
+      this.params.content.message = this.params.content.message ?? contentDefault.message
+      this.params.content.info = this.params.content.info ?? contentDefault.info
+      this.params.content.policy = this.params.content.policy ?? contentDefault.policy
+      this.params.content.btnDismiss = this.params.content.btnDismiss ?? contentDefault.btnDismiss
       this.params.content.policyLink = this.params.content.policyLink ?? ''
-      this.params.content.btnAccept = this.params.content.btnAccept ?? content_default.btnAccept
-      this.params.content.btnReject = this.params.content.btnReject ?? content_default.btnReject
-      this.params.content.btnInfo = this.params.content.btnInfo ?? content_default.btnInfo
-      this.params.content.btnSettings = this.params.content.btnSettings ?? content_default.btnSettings
-      this.params.content.align = this.params.content.align ?? content_default.content_align
+      this.params.content.btnAccept = this.params.content.btnAccept ?? contentDefault.btnAccept
+      this.params.content.btnReject = this.params.content.btnReject ?? contentDefault.btnReject
+      this.params.content.btnInfo = this.params.content.btnInfo ?? contentDefault.btnInfo
+      this.params.content.btnSettings = this.params.content.btnSettings ?? contentDefault.btnSettings
+      this.params.content.align = this.params.content.align ?? contentDefault.content_align
     }
     else {
-      this.params.content = content_default
+      this.params.content = contentDefault
     }
   }
 
@@ -635,7 +623,9 @@ export class CookiesConsent {
   }
 
   getStatus() { return this.#answered }
+
   getConfig() { return this.params }
+
   showMessage() {
     try {
       this.printHtmlMessage()

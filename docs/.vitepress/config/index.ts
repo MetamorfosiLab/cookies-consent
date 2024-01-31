@@ -27,6 +27,7 @@ export default defineConfig({
     sidebar: {
       '/guide/': { base: '/guide/', items: sidebarGuide() },
       '/config/': { base: '/config/', items: sidebarGuide() },
+      '/types/': { base: '/types/', items: sidebarGuide() },
     },
 
     socialLinks: [
@@ -83,6 +84,9 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       base: '/config/',
       items: [
         { text: 'Shared Options', link: 'shared-options' },
+        { text: 'Content Options', link: 'content-options' },
+        { text: 'Cookies Options', link: 'cookies-options' },
+        { text: 'Callback Functions', link: 'callback-functions' },
       ],
     },
     {
@@ -93,6 +97,15 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { text: 'Dark', link: 'theme-dark' },
         { text: 'Smooth', link: 'theme-smooth' },
         { text: 'Contrast', link: 'theme-contrast' },
+      ],
+    },
+    {
+      text: 'Types',
+      base: '/types/',
+      items: [
+        { text: 'Content Type', link: 'content-type' },
+        { text: 'Cookies Type', link: 'cookies-type' },
+        { text: 'Callback Type', link: 'callback-type' },
       ],
     },
   ]
