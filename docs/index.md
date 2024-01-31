@@ -27,25 +27,3 @@ features:
     title: GA and GTM Support
     details: Cookies Consent supports Google Analytics and Google Tag Manager out of the box.
 ---
-
-<style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #febe34 30%, #754e11);
-
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #febe34 50%, #754e11 50%);
-  --vp-home-hero-image-filter: blur(44px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-</style>

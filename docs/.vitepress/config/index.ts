@@ -13,7 +13,10 @@ export default defineConfig({
   lastUpdated: true,
   cleanUrls: true,
 
+  head: [['link', { rel: 'icon', href: '/cookies-consent/favicon.ico' }]],
+
   themeConfig: {
+    logo: '/logo.svg',
     // https://vitepress.dev/reference/default-theme-config
     // nav: [
     //   { text: 'Home', link: '/' },
