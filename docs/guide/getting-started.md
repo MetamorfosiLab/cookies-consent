@@ -1,4 +1,11 @@
+---
+title: Getting Started
+description: This guide will walk you through the process of installing and configuring Cookies Consent.
+---
+
 # Getting Started
+
+This guide will walk you through the process of installing and configuring Cookies Consent.
 
 ## Installation
 
@@ -50,7 +57,9 @@ Cookies Consent comes with a default stylesheet that you can include in your pro
 
 :::
 
-Also, you can import predefined themes. There are three themes available: [contrast](./theme-contrast.md), [dark](./theme-dark.md), and [smooth](./theme-smooth.md).
+Also, you can import predefined themes.
+
+There are three themes available: [contrast](./theme-contrast.md), [dark](./theme-dark.md), and [smooth](./theme-smooth.md).
 
 ### Importing the library
 

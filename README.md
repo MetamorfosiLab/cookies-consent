@@ -77,56 +77,56 @@ You can use one of the predefined themes or create your own by calling its style
 
 ## General configuration
 
-Key | Description | Values
---- | --- | --- |
-expirationDays | Specifies the number of days the cookie will be valid. If not specified, the cookie is deleted when the browser is closed.
-path | Tells the browser what path to the directory the cookie belongs to. | Absolute path.<br>Default: “/”
-sameSite | Allows you to declare if your cookie should be restricted to a first-party or same-site context.<br>[SameSite cookies – HTTP - MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite) | lax, static, none<br>Default: lax
-position | Position where the cookies message will be placed. | top, top-left, top-right, top-center, bottom, bottom-left, bottom-right, bottom-center.<br>Default: bottom-left
-btnDismissPosition | Position where the dismiss button will be placed. | top-left, top-right, bottom-left, bottom-right<br>Default: bottom-left
-buttons | List of buttons that will be shown. The order in the array determines the order in which the buttons will be displayed. | accept, reject, settings, info, dismiss<br>Default: accept
-ignorePages | List of pages that will be exluded of showing the cookies message. | string[]
-hideDescription | Determines if the description of the cookies in the settings window appears collapsed or visible. | true, false<br>Default: true
-mainWindowSettings | Set the settings window as the main. This window will be displayed when the page is accessed for the first time or when we click on the dismiss button to configure cookies. | true, false<br>Default: false
-animation | Determines if the window will be shown with an animation. This does not affect the information and settings windows. | true, false<br>Default: true
-content | Parameters that define the message content. | See below
-cookies | Parameters that define the custom cookies. | See below
-callback | Functions that will be invoked after some events: first load, every load, after accepting cookies and after rejecting cookies. Callback functions allow us to control the actions that must be executed depending on the state of the cookies. | See below
+| Key                | Description                                                                                                                                                                                                                                    | Values                                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| expirationDays     | Specifies the number of days the cookie will be valid. If not specified, the cookie is deleted when the browser is closed.                                                                                                                     |                                                                                                                 |
+| path               | Tells the browser what path to the directory the cookie belongs to.                                                                                                                                                                            | Absolute path.<br>Default: “/”                                                                                  |
+| sameSite           | Allows you to declare if your cookie should be restricted to a first-party or same-site context.<br>[SameSite cookies – HTTP - MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite)               | lax, static, none<br>Default: lax                                                                               |
+| position           | Position where the cookies message will be placed.                                                                                                                                                                                             | top, top-left, top-right, top-center, bottom, bottom-left, bottom-right, bottom-center.<br>Default: bottom-left |
+| btnDismissPosition | Position where the dismiss button will be placed.                                                                                                                                                                                              | top-left, top-right, bottom-left, bottom-right<br>Default: bottom-left                                          |
+| buttons            | List of buttons that will be shown. The order in the array determines the order in which the buttons will be displayed.                                                                                                                        | accept, reject, settings, info, dismiss<br>Default: accept                                                      |
+| ignorePages        | List of pages that will be exluded of showing the cookies message.                                                                                                                                                                             | string[]                                                                                                        |
+| hideDescription    | Determines if the description of the cookies in the settings window appears collapsed or visible.                                                                                                                                              | true, false<br>Default: true                                                                                    |
+| mainWindowSettings | Set the settings window as the main. This window will be displayed when the page is accessed for the first time or when we click on the dismiss button to configure cookies.                                                                   | true, false<br>Default: false                                                                                   |
+| animation          | Determines if the window will be shown with an animation. This does not affect the information and settings windows.                                                                                                                           | true, false<br>Default: true                                                                                    |
+| content            | Parameters that define the message content.                                                                                                                                                                                                    | See below                                                                                                       |
+| cookies            | Parameters that define the custom cookies.                                                                                                                                                                                                     | See below                                                                                                       |
+| callback           | Functions that will be invoked after some events: first load, every load, after accepting cookies and after rejecting cookies. Callback functions allow us to control the actions that must be executed depending on the state of the cookies. | See below                                                                                                       |
 
 ## Content parameters
 
 Configure the contents of the cookies message window.
 
-Key | Description | Values
---- | --- | --- |
-title | Title of the cookies message. | Default: Cookies compliance
-message | Text of the cookies message. | Default: We use cookies
-align | Alignment of the content (title and message, not buttons). | left, right, center<br>Default: left
-policy | Text for the privacy policy link. If it is not specified it will not be shown.
-policyLink | Link to the privacy policy. If it is not specified the text will not be shown.
-btnAccept | Text for the accept button. By clicking this button all the cookies will be accepted. | Default: “Accept all”
-btnReject | Text for the reject button. By clicking this button all the cookies will be rejected. | Default: “Reject all”
-btnDismiss | Text for the dismiss button. This button is shown when the cookies message is accepted or rejected. By clicking this button the cookies message will be shown. | Default: “Cookies policy”
-btnSettings | Text for the settings button. By clicking this button the settings window will be open to select custom cookies. | Default: “Settings”
-settingsHeader | Text that will be shown in the header of the settings window. It is possible to specify HTML code. |
-settingsFooter | Text that will be shown in the footer of the settings window. It is possible to specify HTML code. |
-btnSettingsSelectAll | Text for the **select all** button placed in the settings window. | Default: “Select all”
-btnSettingsUnselectAll | Text for the **unselect all** button placed in the settings window. | Default: “Unselect all”
-btnSettingsAccept | Text for the accept selection button placed in the settings window. | Default: “Accept selection”
-btnInfo | Text for the **information** button. By clicking this button the information window will be open. | Default: “More info”
-info | Text that will be shown in the information window. It is possible to specify HTML code.
+| Key                    | Description                                                                                                                                                    | Values                               |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| title                  | Title of the cookies message.                                                                                                                                  | Default: Cookies compliance          |
+| message                | Text of the cookies message.                                                                                                                                   | Default: We use cookies              |
+| align                  | Alignment of the content (title and message, not buttons).                                                                                                     | left, right, center<br>Default: left |
+| policy                 | Text for the privacy policy link. If it is not specified it will not be shown.                                                                                 |                                      |
+| policyLink             | Link to the privacy policy. If it is not specified the text will not be shown.                                                                                 |                                      |
+| btnAccept              | Text for the accept button. By clicking this button all the cookies will be accepted.                                                                          | Default: “Accept all”                |
+| btnReject              | Text for the reject button. By clicking this button all the cookies will be rejected.                                                                          | Default: “Reject all”                |
+| btnDismiss             | Text for the dismiss button. This button is shown when the cookies message is accepted or rejected. By clicking this button the cookies message will be shown. | Default: “Cookies policy”            |
+| btnSettings            | Text for the settings button. By clicking this button the settings window will be open to select custom cookies.                                               | Default: “Settings”                  |
+| settingsHeader         | Text that will be shown in the header of the settings window. It is possible to specify HTML code.                                                             |                                      |
+| settingsFooter         | Text that will be shown in the footer of the settings window. It is possible to specify HTML code.                                                             |                                      |
+| btnSettingsSelectAll   | Text for the **select all** button placed in the settings window.                                                                                              | Default: “Select all”                |
+| btnSettingsUnselectAll | Text for the **unselect all** button placed in the settings window.                                                                                            | Default: “Unselect all”              |
+| btnSettingsAccept      | Text for the accept selection button placed in the settings window.                                                                                            | Default: “Accept selection”          |
+| btnInfo                | Text for the **information** button. By clicking this button the information window will be open.                                                              | Default: “More info”                 |
+| info                   | Text that will be shown in the information window. It is possible to specify HTML code.                                                                        |                                      |
 
 ## Custom cookies parameters
 
-Key | Description | Values
---- | --- | --- |
-name | Name by which the browser will identify the cookie. A name without spaces or special characters is recommended. | The **cc_ga** and **cc_gtm** names are reserved to associate the cookie to Google Analytics and Google Tag Manager services.
-title | Title or long name with which the cookie will be displayed in its description section.
-description | Text that will be shown in the settings window to describe the cookie. It is possible to specify HTML code.
-checked | Initial state of the cookie checkbox. | true, false<br>Default: false
-disabled | Allows to interact or not with the checkbox. | true, false<br>Default: false
-onLoad | Only applicable to a cookie associated to Google Analytics. Determines whether data collection is activated before the user has accepted or rejected cookies. | true, false<br>Default: false
-code | Only applicable to a cookie associated to Google Analytics. Google Analytics code for global site tag (gtag.js).
+| Key         | Description                                                                                                                                                   | Values                                                                                                                       |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| name        | Name by which the browser will identify the cookie. A name without spaces or special characters is recommended.                                               | The **cc_ga** and **cc_gtm** names are reserved to associate the cookie to Google Analytics and Google Tag Manager services. |
+| title       | Title or long name with which the cookie will be displayed in its description section.                                                                        |                                                                                                                              |
+| description | Text that will be shown in the settings window to describe the cookie. It is possible to specify HTML code.                                                   |                                                                                                                              |
+| checked     | Initial state of the cookie checkbox.                                                                                                                         | true, false<br>Default: false                                                                                                |
+| disabled    | Allows to interact or not with the checkbox.                                                                                                                  | true, false<br>Default: false                                                                                                |
+| onLoad      | Only applicable to a cookie associated to Google Analytics. Determines whether data collection is activated before the user has accepted or rejected cookies. | true, false<br>Default: false                                                                                                |
+| code        | Only applicable to a cookie associated to Google Analytics. Google Analytics code for global site tag (gtag.js).                                              |                                                                                                                              |
 
 **Example**
 
@@ -171,23 +171,23 @@ Google third party services are activated and deactivated by removing their scri
 
 # Callback functions
 
-Key | Description
---- | --- |
-first_load | This function will be invoked when the user visits the page and has not neither accepted nor rejected the cookies message.
-accept | This function will be invoked when the user clicks on the accept all or accept settings buttons.
-reject | This function will be invoked when the user clicks on the reject button.
-load | This function will be invoked every time a user that interacted previously with the cookies message (accepting or rejecting) visits the page.
+| Key        | Description                                                                                                                                   |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| first_load | This function will be invoked when the user visits the page and has not neither accepted nor rejected the cookies message.                    |
+| accept     | This function will be invoked when the user clicks on the accept all or accept settings buttons.                                              |
+| reject     | This function will be invoked when the user clicks on the reject button.                                                                      |
+| load       | This function will be invoked every time a user that interacted previously with the cookies message (accepting or rejecting) visits the page. |
 
 [See example](https://www.oxterisk.com/projects/cookies-consent-js/ccjs-examples/ccjs-callback-functions/)
 
 # Methods
 
-Key | Description
---- | --- |
-getStatus() | Returns true or false depending on whether the cookies message has ben answered or not.
-getConfig() | Returns the whole cookies consent configuration.
-showMessage() | Shows the cookies message.
-removeCookies() | Remove all the cookies created for this page.
+| Key             | Description                                                                             |
+|-----------------|-----------------------------------------------------------------------------------------|
+| getStatus()     | Returns true or false depending on whether the cookies message has ben answered or not. |
+| getConfig()     | Returns the whole cookies consent configuration.                                        |
+| showMessage()   | Shows the cookies message.                                                              |
+| removeCookies() | Remove all the cookies created for this page.                                           |
 
 # Previews
 
