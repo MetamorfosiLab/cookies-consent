@@ -48,5 +48,5 @@ const cookiesConsent = new CookiesConsent({
 
 const cookieSettings = document.querySelector('#cookie-settings')
 cookieSettings?.addEventListener('click', () => {
-  cookiesConsent.showhideSettings()
+  cookiesConsent.toggleSettings()
 })

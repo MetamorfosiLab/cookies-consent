@@ -1,4 +1,6 @@
 import type {
+  AnalyticsType,
+  Callback,
   CookiesConsentParams,
   CookiesConsentStatusType,
   CookiesStatus,
@@ -14,6 +16,7 @@ export class CookiesConsent {
 
   #answered = false
   #cookies_status: CookiesStatus = {}
+  #cookie_name = 'consentcookies_status'
 
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
@@ -40,117 +43,113 @@ export class CookiesConsent {
   }
 
   answeredConsent() {
-    const cookie_name = 'consentcookies_status='
-    const ca = document.cookie.split(';')
-    let status = ''
-
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i]
-      while (c.charAt(0) === ' ')
-        c = c.substring(1)
-
-      if (c.indexOf(cookie_name) === 0)
-        status = c.substring(cookie_name.length, c.length)
-    }
-
-    this.#answered = status !== ''
+    this.#answered = (document.cookie.split(';').some(c => c.trim().startsWith(this.#cookie_name)) || '') !== ''
     return this.#answered
   }
 
   checkCookies() {
-    const cookies = document.cookie.split(' ')
-
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].split('=')
-
-      this.#cookies_status[cookie[0]] = true
-    }
+    document.cookie.split(' ').forEach((cookie) => {
+      const [name] = cookie.split('=')
+      this.#cookies_status[name] = true
+    })
   }
 
   checkParameters() {
-    if (this.params?.cookies) {
-      for (const cookie in this.params.cookies) {
-        if (this.params.cookies[cookie]?.name)
-          this.#cookies_status[this.params.cookies[cookie].name] = false
-      }
-    }
-    else {
-      this.params.cookies = {}
-    }
+    this.params = this.params || {}
+    this.params.cookies = this.params.cookies || {}
 
-    this.params.mainWindowSettings = this.params.mainWindowSettings ?? false
-    this.params.position = this.params.position ?? 'bottom-left'
-    this.params.btnDismissPosition = this.params.btnDismissPosition ?? 'bottom-left'
-    this.params.expirationDays = this.params.expirationDays ?? 0
-    this.params.animation = this.params.animation ?? true
-    this.params.path = this.params.path ?? 'path=/'
+    for (const cookie in this.params.cookies)
+      this.#cookies_status[this.params.cookies[cookie]?.name] = false
 
-    if (this.params?.content) {
-      this.params.content.title = this.params.content.title ?? contentDefault.title
-      this.params.content.message = this.params.content.message ?? contentDefault.message
-      this.params.content.info = this.params.content.info ?? contentDefault.info
-      this.params.content.policy = this.params.content.policy ?? contentDefault.policy
-      this.params.content.btnDismiss = this.params.content.btnDismiss ?? contentDefault.btnDismiss
-      this.params.content.policyLink = this.params.content.policyLink ?? ''
-      this.params.content.btnAccept = this.params.content.btnAccept ?? contentDefault.btnAccept
-      this.params.content.btnReject = this.params.content.btnReject ?? contentDefault.btnReject
-      this.params.content.btnInfo = this.params.content.btnInfo ?? contentDefault.btnInfo
-      this.params.content.btnSettings = this.params.content.btnSettings ?? contentDefault.btnSettings
-      this.params.content.align = this.params.content.align ?? contentDefault.content_align
-    }
-    else {
-      this.params.content = contentDefault
+    this.params.mainWindowSettings ??= false
+    this.params.position ??= 'bottom-left'
+    this.params.btnDismissPosition ??= 'bottom-left'
+    this.params.expirationDays ??= 0
+    this.params.animation ??= true
+    this.params.path ??= 'path=/'
+    this.params.hideDescription ??= true
+
+    this.params.content = {
+      ...contentDefault,
+      ...this.params.content,
     }
   }
 
+  // printHtmlMessage() {
+  //   if (this.params.mainWindowSettings) {
+  //     this.showhideSettings()
+  //   }
+  //   else {
+  //     const cc_window = document.getElementById('cc-window')
+  //
+  //     if (!cc_window) {
+  //       // Position
+  //       const positionCss = `cc-pos-${this.params.position}`
+  //       const contentAlign = `cc-content-${this.params.content?.align}`
+  //       let positionInsert: InsertPosition = 'afterbegin'
+  //
+  //       if (this.params.position === 'bottom' || this.params.position === 'bottom-right' || this.params.position === 'bottom-left' || this.params.position === 'bottom-center')
+  //         positionInsert = 'beforeend'
+  //
+  //       // Buttons
+  //       const buttons = this.getHtmlButtons()
+  //
+  //       // Policy link
+  //       let policy = ''
+  //
+  //       if (this.params.content?.policy !== '' && this.params.content?.policyLink !== '')
+  //         policy = `<a href="${this.params.content?.policyLink}" target="_blank">${this.params.content?.policy}</a>`
+  //
+  //       const content = `
+  //               <div class="cc-window-content">
+  //                   <div class="cc-window-title">${this.params.content?.title}</div>
+  //                   <div class="cc-window-message">${this.params.content?.message} <span class="cc-window-policy">${policy}</span></div>
+  //                   <div class="cc-window-buttons">${buttons}</div>
+  //               </div>`
+  //
+  //       // Create window
+  //       const htmlMessage = document.createElement('div')
+  //       htmlMessage.id = 'cc-window'
+  //       htmlMessage.classList.add('cc-window')
+  //       htmlMessage.classList.add(positionCss)
+  //       htmlMessage.classList.add(contentAlign)
+  //
+  //       if (this.params.animation)
+  //         htmlMessage.classList.add('cc-animation-in')
+  //
+  //       htmlMessage.innerHTML = content
+  //
+  //       document.body.insertAdjacentElement(positionInsert, htmlMessage)
+  //
+  //       this.attachEventsButtons()
+  //     }
+  //   }
+  // }
+
   printHtmlMessage() {
     if (this.params.mainWindowSettings) {
-      this.showhideSettings()
+      this.toggleSettings()
     }
-    else {
-      const cc_window = document.getElementById('cc-window')
+    else if (!document.getElementById('cc-window')) {
+      const positionCss = `cc-pos-${this.params.position}`
+      const contentAlign = `cc-content-${this.params.content?.align}`
+      const positionInsert = ['bottom', 'bottom-right', 'bottom-left', 'bottom-center'].includes(this.params.position ?? '') ? 'beforeend' : 'afterbegin'
 
-      if (!cc_window) {
-        // Position
-        const positionCss = `cc-pos-${this.params.position}`
-        const contentAlign = `cc-content-${this.params.content?.align}`
-        let positionInsert: InsertPosition = 'afterbegin'
+      const buttons = this.getHtmlButtons()
+      const policy = this.params.content?.policy !== '' && this.params.content?.policyLink !== '' ? `<a href="${this.params.content.policyLink}" target="_blank">${this.params.content.policy}</a>` : ''
 
-        if (this.params.position === 'bottom' || this.params.position === 'bottom-right' || this.params.position === 'bottom-left' || this.params.position === 'bottom-center')
-          positionInsert = 'beforeend'
+      const htmlMessage = `
+        <div id="cc-window" class="cc-window ${positionCss} ${contentAlign} ${this.params.animation ? 'cc-animation-in' : ''}">
+            <div class="cc-window-content">
+              <div class="cc-window-title">${this.params.content?.title}</div>
+              <div class="cc-window-message">${this.params.content?.message} <span class="cc-window-policy">${policy}</span></div>
+              <div class="cc-window-buttons">${buttons}</div>
+          </div>
+        </div>
+      `
 
-        // Buttons
-        const buttons = this.getHtmlButtons()
-
-        // Policy link
-        let policy = ''
-
-        if (this.params.content?.policy !== '' && this.params.content?.policyLink !== '')
-          policy = `<a href="${this.params.content?.policyLink}" target="_blank">${this.params.content?.policy}</a>`
-
-        const content = `
-                <div class="cc-window-content">
-                    <div class="cc-window-title">${this.params.content?.title}</div>
-                    <div class="cc-window-message">${this.params.content?.message} <span class="cc-window-policy">${policy}</span></div>
-                    <div class="cc-window-buttons">${buttons}</div>
-                </div>`
-
-        // Create window
-        const htmlMessage = document.createElement('div')
-        htmlMessage.id = 'cc-window'
-        htmlMessage.classList.add('cc-window')
-        htmlMessage.classList.add(positionCss)
-        htmlMessage.classList.add(contentAlign)
-
-        if (this.params.animation)
-          htmlMessage.classList.add('cc-animation-in')
-
-        htmlMessage.innerHTML = content
-
-        document.body.insertAdjacentElement(positionInsert, htmlMessage)
-
-        this.attachEventsButtons()
-      }
+      document.body.insertAdjacentHTML(positionInsert, htmlMessage)
+      this.attachEventsButtons()
     }
   }
 
@@ -168,9 +167,8 @@ export class CookiesConsent {
             else if (button === 'info')
               html += `<button type="button" id="cc-btn-info" class="cc-btn-info">${this.params.content?.btnInfo}</button>`
             else if (button === 'settings')
-              html += `<button type="button" id="cc-btn-settings" class="cc-btn-info">${this.params.content?.btnSettings}</button>`
+              html += `<button type="button" id="cc-btn-settings" class="cc-btn-settings">${this.params.content?.btnSettings}</button>`
           },
-
         )
 
         return html
@@ -185,34 +183,20 @@ export class CookiesConsent {
       const elem = document.getElementById('cc-window')
 
       if (this.params.animation && elem) {
+        ['accept', 'reject', 'info', 'settings'].forEach((button) => {
+          const btn = document.getElementById(`cc-btn-${button}`)
+          if (btn)
+            btn.id = `cc-btn-${button}-out`
+        })
+
         elem.id = 'cc-window-out'
         elem.classList.remove('cc-animation-in')
         elem.classList.add('cc-animation-out')
 
-        const btnAccept = document.getElementById('cc-btn-accept')
-        if (btnAccept)
-          btnAccept.id = 'cc-btn-accept-out'
-
-        const btnReject = document.getElementById('cc-btn-reject')
-        if (btnReject)
-          btnReject.id = 'cc-btn-reject-out'
-
-        const btnInfo = document.getElementById('cc-btn-info')
-        if (btnInfo)
-          btnInfo.id = 'cc-btn-info-out'
-
-        const btnSettings = document.getElementById('cc-btn-settings')
-        if (btnSettings)
-          btnSettings.id = 'cc-btn-settings-out'
-
-        setTimeout(() => {
-          if (elem)
-            elem.remove()
-        }, 2000)
+        setTimeout(() => elem?.remove(), 2000)
       }
       else {
-        if (elem)
-          elem.remove()
+        elem?.remove()
       }
     }
   }
@@ -220,76 +204,64 @@ export class CookiesConsent {
   printDismissButton() {
     const cc_btn_dismiss = document.getElementById('cc-btn-dismiss')
 
-    if (!cc_btn_dismiss) {
-      if (this.params.buttons?.includes('dismiss')) {
-        const positionCss = `cc-pos-${this.params.btnDismissPosition}`
-        let positionInsert: InsertPosition = 'beforeend'
+    if (!cc_btn_dismiss && this.params?.buttons?.includes('dismiss')) {
+      const positionCss = `cc-pos-${this.params.btnDismissPosition}`
+      const positionInsert = ['top-right', 'top-left'].includes(this.params.position ?? '') ? 'afterbegin' : 'beforeend'
 
-        if (this.params.position === 'top-right' || this.params.position === 'top-left')
-          positionInsert = 'afterbegin'
+      document.body.insertAdjacentHTML(positionInsert, `
+        <div id="cc-btn-dismiss" class="${positionCss}">
+          ${this.params.content?.btnDismiss ?? ''}
+        </div>
+      `)
 
-        const dismissButton = document.createElement('div')
-        dismissButton.id = 'cc-btn-dismiss'
-        dismissButton.classList.add(positionCss)
-        dismissButton.innerHTML = this.params.content?.btnDismiss ?? ''
-
-        document.body.insertAdjacentElement(positionInsert, dismissButton)
-
-        this.attachEventsButtons()
-      }
+      this.attachEventsButtons()
     }
   }
 
   removeDismissButton() {
-    const elem = document.getElementById('cc-btn-dismiss')
-
-    if (elem)
-      elem.remove()
+    document.getElementById('cc-btn-dismiss')?.remove()
   }
 
-  showhideInfo() {
+  toggleInfo() {
     if (this.params.content?.info) {
       const divInfo = document.createElement('div')
       divInfo.innerHTML = this.params.content.info ?? ''
 
-      this.openPopUp('cc-window-info', divInfo)
+      this.openPopup('cc-window-info', divInfo)
     }
   }
 
-  showhideSettings() {
+  /* toggleSettings() {
     const divCookieSettings = document.createElement('div')
     divCookieSettings.className = 'cc-window-settings-cookies'
 
     this.params.hideDescription = Boolean(this.params.hideDescription ?? true)
 
-    if (this.params.content?.settingsHeader) {
-      const divHeader = document.createElement('div')
-      divHeader.className = 'cc-window-settings-header'
-      divHeader.innerHTML = this.params.content.settingsHeader ?? ''
-      divCookieSettings.appendChild(divHeader)
+    const createElement = (tag: string, className: string, innerHTML?: string) => {
+      const element = document.createElement(tag)
+      element.className = className
+      element.innerHTML = innerHTML ?? ''
+      return element
     }
+
+    if (this.params.content?.settingsHeader)
+      divCookieSettings.appendChild(createElement('div', 'cc-window-settings-header', this.params.content.settingsHeader))
 
     for (const cookie in this.params.cookies) {
       const elem_id = Math.floor(Math.random() * 10000)
+      const divCookie = createElement('div', 'cc-window-settings-cookie')
 
-      const divCookie = document.createElement('div')
-      divCookie.setAttribute('id', cookie)
-      divCookie.className = 'cc-window-settings-cookie'
-
-      const divCookieContent = document.createElement('div')
-      divCookieContent.className = 'cc-window-settings-cookie-content'
+      const divCookieContent = createElement('div', 'cc-window-settings-cookie-content')
 
       if (this.params.cookies[cookie]?.title) {
-        const divTitle = document.createElement('div')
-        divTitle.className = 'cc-window-settings-cookie-title'
-        divTitle.innerHTML = `${this.params.cookies[cookie].title}`
+        const divTitle = createElement('div', 'cc-window-settings-cookie-title', this.params.cookies[cookie].title)
 
         if (this.params.cookies[cookie]?.description && this.params.hideDescription) {
           divTitle.innerHTML += ` <div id="cc-window-icon-dropdown-id-${elem_id}">&#10095;</div>`
           divTitle.classList.add('cc-window-settings-cookie-title-dropdown')
 
           divTitle.addEventListener('click', () => {
-            this.showhideDescription(String(elem_id))
+            this.toggleDescription(String(elem_id))
           })
         }
 
@@ -297,21 +269,18 @@ export class CookiesConsent {
       }
 
       if (this.params.cookies[cookie]?.description) {
-        const divDescription = document.createElement('div')
+        const divDescription = createElement('div', 'cc-window-settings-cookie-desc', this.params.cookies[cookie].description)
         divDescription.id = `cc-window-desc-id-${elem_id}`
-        divDescription.className = 'cc-window-settings-cookie-desc'
 
         if (this.params.cookies[cookie]?.title && this.params.hideDescription)
           divDescription.style.display = 'none'
 
-        divDescription.innerHTML = this.params.cookies[cookie].description ?? ''
         divCookieContent.appendChild(divDescription)
       }
 
       divCookie.appendChild(divCookieContent)
 
       let checked = ''
-
       if (this.#answered && this.params.cookies[cookie]?.name)
         checked = this.#cookies_status[this.params.cookies[cookie].name] ? ' checked="checked"' : ''
       else
@@ -319,43 +288,159 @@ export class CookiesConsent {
 
       const disabled = this.params.cookies[cookie].disabled && checked !== '' ? ' disabled="disabled"' : ''
 
-      const divStatus = document.createElement('div')
-      divStatus.className = 'cc-window-settings-cookie-value'
-      divStatus.innerHTML = `<label class="switch"><input type="checkbox" class="cc-cookie-checkbox" id="cc-cookie-${this.params.cookies[cookie].name}" data-name="${this.params.cookies[cookie].name}" name="cc-cookie-${this.params.cookies[cookie].name}"${checked}${disabled}><span class="slider round"></span></label>`
-
+      const divStatus = createElement('div', 'cc-window-settings-cookie-value', `<label class="switch"><input type="checkbox" class="cc-cookie-checkbox" id="cc-cookie-${this.params.cookies[cookie].name}" data-name="${this.params.cookies[cookie].name}" name="cc-cookie-${this.params.cookies[cookie].name}"${checked}${disabled}><span class="slider round"></span></label>`)
       divCookie.appendChild(divStatus)
       divCookieSettings.appendChild(divCookie)
     }
 
+    const createButton = (id: string, className: string, text: string) => `<button type="button" id="${id}" class="${className}">${text}</button>`
+
     if (divCookieSettings.innerHTML !== '') {
-      const btnSettingsSelectAll = 'Select all'
-      const btnSettingsUnselectAll = 'Unselect all'
-      const btnSettingsAccept = 'Accept selection'
+      const btnSettingsSelectAll = this.params.content?.btnSettingsSelectAll ?? 'Select all'
+      const btnSettingsAccept = this.params.content?.btnSettingsAccept ?? 'Accept selection'
 
-      this.params.content.btnSettingsSelectAll = this.params.content.btnSettingsSelectAll ?? btnSettingsSelectAll
-      this.params.content.btnSettingsUnselectAll = this.params.content.btnSettingsUnselectAll ?? btnSettingsUnselectAll
-      this.params.content.btnSettingsAccept = this.params.content.btnSettingsAccept ?? btnSettingsAccept
-
-      const divButtons = document.createElement('div')
-      divButtons.className = 'cc-window-settings-buttons'
-      divButtons.innerHTML = `<button type="button" id="cc-btn-settings-select" class="cc-btn-settings-select" data-action="select">${this.params.content.btnSettingsSelectAll}</button>
-            <button type="button" id="cc-btn-settings-accept" class="cc-btn-settings-accept">${this.params.content.btnSettingsAccept}</button>`
-
-      divCookieSettings.appendChild(divButtons)
+      divCookieSettings.appendChild(createElement('div', 'cc-window-settings-buttons', `${createButton('cc-btn-settings-select', 'cc-btn-settings-select', btnSettingsSelectAll)}${createButton('cc-btn-settings-accept', 'cc-btn-settings-accept', btnSettingsAccept)}`))
     }
 
-    if (this.params.content.settingsFooter) {
-      const divFooter = document.createElement('div')
-      divFooter.className = 'cc-window-settings-footer'
-      divFooter.innerHTML = this.params.content.settingsFooter ?? ''
-      divCookieSettings.appendChild(divFooter)
+    if (this.params.content?.settingsFooter)
+      divCookieSettings.appendChild(createElement('div', 'cc-window-settings-footer', this.params.content.settingsFooter))
+
+    this.openPopup('cc-window-settings', divCookieSettings)
+    this.attachEventsSettingsButtons()
+  } */
+
+  createElement(tag: string, className: string, innerHTML?: string) {
+    const element = document.createElement(tag)
+    element.className = className
+    element.innerHTML = innerHTML ?? ''
+    return element
+  }
+
+  toggleSettings() {
+    const divCookieSettings = this.createElement('div', 'cc-window-settings-cookies')
+
+    this.createSettingsHeader(divCookieSettings)
+
+    for (const cookie in this.params.cookies) {
+      const cookieElement = this.createCookieElement(cookie)
+
+      if (cookieElement)
+        divCookieSettings.appendChild(cookieElement)
     }
 
-    this.openPopUp('cc-window-settings', divCookieSettings)
+    this.createSettingsButtons(divCookieSettings)
+
+    this.createSettingsFooter(divCookieSettings)
+
+    this.openPopup('cc-window-settings', divCookieSettings)
     this.attachEventsSettingsButtons()
   }
 
-  showhideDescription(id: string) {
+  createSettingsHeader(parentElement: HTMLElement) {
+    if (this.params.content?.settingsHeader) {
+      const divHeader = this.createElement('div', 'cc-window-settings-header', this.params.content.settingsHeader)
+      parentElement.appendChild(divHeader)
+    }
+  }
+
+  createCookieElement(cookie: string) {
+    const elem_id = globalThis.crypto.randomUUID()
+    const divCookie = document.createElement('div')
+    divCookie.setAttribute('id', cookie)
+    divCookie.className = 'cc-window-settings-cookie'
+
+    const divCookieContent = this.createElement('div', 'cc-window-settings-cookie-content')
+
+    const title = this.createCookieTitle(cookie, elem_id)
+    const description = this.createCookieDescription(cookie, elem_id)
+    const status = this.createCookieStatus(cookie)
+
+    title && divCookieContent.appendChild(title)
+    description && divCookieContent.appendChild(description)
+    divCookie.insertAdjacentElement('afterbegin', divCookieContent)
+    status && divCookie.insertAdjacentElement('beforeend', status)
+
+    return divCookie
+  }
+
+  createCookieTitle(cookie: string, elem_id: string) {
+    if (this.params.cookies?.[cookie]?.title) {
+      const divTitle = this.createElement('div', 'cc-window-settings-cookie-title', this.params.cookies[cookie].title)
+
+      if (this.params.cookies[cookie]?.description && this.params.hideDescription) {
+        divTitle.innerHTML += ` <div id="cc-window-icon-dropdown-id-${elem_id}">&#10095;</div>`
+        divTitle.classList.add('cc-window-settings-cookie-title-dropdown')
+
+        divTitle.addEventListener('click', () => {
+          this.toggleDescription(String(elem_id))
+        })
+      }
+
+      return divTitle
+    }
+  }
+
+  createCookieDescription(cookie: string, elem_id: string) {
+    if (this.params.cookies?.[cookie]?.description) {
+      const divDescription = document.createElement('div')
+      divDescription.id = `cc-window-desc-id-${elem_id}`
+      divDescription.className = 'cc-window-settings-cookie-desc'
+
+      if (this.params.cookies[cookie]?.title && this.params.hideDescription)
+        divDescription.style.display = 'none'
+
+      divDescription.innerHTML = this.params.cookies[cookie].description ?? ''
+      return divDescription
+    }
+  }
+
+  createCookieStatus(cookie: string) {
+    let checked = ''
+    if (this.#answered && this.params.cookies?.[cookie]?.name)
+      checked = this.#cookies_status[this.params.cookies[cookie].name] ? ' checked="checked"' : ''
+    else
+      checked = this.params.cookies?.[cookie].checked ? ' checked="checked"' : ''
+
+    const disabled = this.params.cookies?.[cookie].disabled && checked !== '' ? ' disabled="disabled"' : ''
+    const name = this.params.cookies?.[cookie].name ?? ''
+
+    const divStatus = document.createElement('div')
+    divStatus.className = 'cc-window-settings-cookie-value'
+    divStatus.innerHTML = `<label class="switch"><input type="checkbox" class="cc-cookie-checkbox" id="cc-cookie-${name}" data-name="${name}" name="cc-cookie-${name}"${checked}${disabled}><span class="slider round"></span></label>`
+
+    return divStatus
+  }
+
+  createSettingsButtons(parentElement: HTMLElement) {
+    const btnSettingsSelectAll = this.params.content?.btnSettingsSelectAll ?? 'Select all'
+    const btnSettingsAccept = this.params.content?.btnSettingsAccept ?? 'Accept selection'
+
+    if (parentElement.innerHTML !== '') {
+      const divButtons = document.createElement('div')
+      divButtons.className = 'cc-window-settings-buttons'
+      divButtons.innerHTML = `
+        ${this.createButton('cc-btn-settings-select', 'cc-btn-settings-select', btnSettingsSelectAll)}
+        ${this.createButton('cc-btn-settings-accept', 'cc-btn-settings-accept', btnSettingsAccept)}
+      `
+
+      parentElement.appendChild(divButtons)
+    }
+  }
+
+  createSettingsFooter(parentElement: HTMLElement) {
+    if (this.params.content?.settingsFooter) {
+      const divFooter = document.createElement('div')
+      divFooter.className = 'cc-window-settings-footer'
+      divFooter.innerHTML = this.params.content.settingsFooter ?? ''
+      parentElement.appendChild(divFooter)
+    }
+  }
+
+  createButton(id: string, className: string, text: string) {
+    return `<button type="button" id="${id}" class="${className}">${text}</button>`
+  }
+
+  toggleDescription(id: string) {
     const description = document.getElementById(`cc-window-desc-id-${id}`)
     const icon = document.getElementById(`cc-window-icon-dropdown-id-${id}`)
 
@@ -369,41 +454,38 @@ export class CookiesConsent {
     }
   }
 
-  openPopUp(id: string, content: HTMLElement) {
-    const htmlPopUp = document.createElement('div')
-    htmlPopUp.id = id
-    htmlPopUp.classList.add('cc-modal')
+  openPopup(id: string, content: HTMLElement) {
+    const htmlPopup = document.createElement('div')
+    htmlPopup.id = id
+    htmlPopup.className = 'cc-modal'
 
     const modalWindow = document.createElement('div')
-    modalWindow.classList.add('cc-modal-window')
+    modalWindow.className = 'cc-modal-window'
 
     const modalContent = document.createElement('div')
-    modalContent.classList.add('cc-modal-content')
+    modalContent.className = 'cc-modal-content'
     modalContent.appendChild(content)
 
     if (!this.params.mainWindowSettings) {
       const modalClose = document.createElement('div')
       modalClose.id = 'cc-modal-close'
-      modalClose.classList.add('cc-modal-close')
+      modalClose.className = 'cc-modal-close'
       modalClose.innerHTML = '&times;'
-
       modalWindow.appendChild(modalClose)
     }
 
     modalWindow.appendChild(modalContent)
-    htmlPopUp.appendChild(modalWindow)
+    htmlPopup.appendChild(modalWindow)
 
-    document.body.insertAdjacentElement('beforeend', htmlPopUp)
+    document.body.insertAdjacentElement('beforeend', htmlPopup)
 
-    htmlPopUp.style.display = 'block'
+    htmlPopup.style.display = 'block'
 
     const btnClose = document.getElementById('cc-modal-close')
-
-    if (btnClose)
-      btnClose.addEventListener('click', () => { htmlPopUp.remove() })
+    btnClose?.addEventListener('click', () => htmlPopup.remove())
   }
 
-  closePopUp() {
+  closePopup() {
     const modals = document.getElementsByClassName('cc-modal')
 
     for (let i = 0; i < modals.length; i++)
@@ -434,7 +516,7 @@ export class CookiesConsent {
     })
 
     btnInfo?.addEventListener('click', () => {
-      this.showhideInfo()
+      this.toggleInfo()
     })
 
     btnDismiss?.addEventListener('click', () => {
@@ -443,7 +525,7 @@ export class CookiesConsent {
     })
 
     btnSettings?.addEventListener('click', () => {
-      this.showhideSettings()
+      this.toggleSettings()
     })
   }
 
@@ -463,7 +545,7 @@ export class CookiesConsent {
         this.printDismissButton()
         this.setCookieStatusInParams('selection')
         this.setCookieConsent('selection')
-        this.closePopUp()
+        this.closePopup()
         this.callbackFunction('accept')
       })
     }
@@ -472,52 +554,38 @@ export class CookiesConsent {
   changeStateSettingsSelection() {
     const elem = document.getElementById('cc-btn-settings-select')
     const action = elem?.dataset.action
-    let status = false
 
-    if (elem && action === 'select') {
-      status = true
-      elem.innerHTML = this.params.content.btnSettingsUnselectAll ?? ''
-      elem.dataset.action = 'unselect'
-    }
-    else if (elem && action === 'unselect') {
-      elem.innerHTML = this.params.content.btnSettingsSelectAll ?? ''
-      elem.dataset.action = 'select'
-    }
+    if (elem && (action === 'select' || action === 'unselect')) {
+      const status = action === 'select'
+      elem.innerHTML = status ? (this.params.content.btnSettingsUnselectAll ?? '') : (this.params.content.btnSettingsSelectAll ?? '')
+      elem.dataset.action = status ? 'unselect' : 'select'
 
-    const chk_cookie: NodeListOf<HTMLInputElement> = document.querySelectorAll('.cc-window-settings-cookie-value .cc-cookie-checkbox')
-
-    for (let i = 0; i < chk_cookie.length; i++) {
-      if (!chk_cookie[i].disabled)
-        chk_cookie[i].checked = status
+      const chk_cookie = document.querySelectorAll<HTMLInputElement>('.cc-window-settings-cookie-value .cc-cookie-checkbox')
+      chk_cookie.forEach((checkbox) => {
+        if (!checkbox.disabled)
+          checkbox.checked = status
+      })
     }
   }
 
   setCookieConsent(status: CookiesConsentStatusType) {
-    let expires = ''
+    const expires = this.params.expirationDays > 0 ? `expires=${new Date(Date.now() + this.params.expirationDays * 24 * 60 * 60 * 1000).toUTCString()}` : ''
+    const value = btoa(`${status}:${Date.now()}`)
+    const sameSiteOptions = {
+      none: 'SameSite=None;Secure',
+      strict: 'SameSite=Strict',
+      lax: 'SameSite=Lax',
+    }
+    const sameSite = (this.params.sameSite && sameSiteOptions[this.params.sameSite]) || sameSiteOptions.lax
 
-    if (this.params.expirationDays > 0) {
-      const d = new Date()
-      d.setTime(d.getTime() + (this.params.expirationDays * 24 * 60 * 60 * 1000))
-      expires = `expires=${d.toUTCString()}`
+    const setCookie = (key: string, value: string) => {
+      document.cookie = `${key}=${value};${expires};${this.params.path};${sameSite};`
     }
 
-    const value = btoa(`${status}:${Date.now()}`)
-
-    let sameSite = 'SameSite=Lax'
-
-    if (this.params.sameSite === 'none')
-      sameSite = 'SameSite=None;Secure'
-
-    if (this.params.sameSite === 'strict')
-      sameSite = 'SameSite=Strict'
-
-    document.cookie = `consentcookies_status=${value};${expires};${this.params.path};${sameSite};`
+    setCookie(this.#cookie_name, value)
 
     Object.entries(this.#cookies_status).forEach(([key, value]) => {
-      if (value)
-        document.cookie = `${key}=${btoa(`${key}:${Date.now()}`)};${expires};${this.params.path};${sameSite};`
-      else
-        document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;${this.params.path};${sameSite};`
+      value && setCookie(key, btoa(`${key}:${Date.now()}`))
     })
 
     this.#answered = true
@@ -547,78 +615,50 @@ export class CookiesConsent {
   }
 
   callbackFunction(type: LifecycleType) {
-    // BEGIN: Google Analytics callbacks
-    if (this.params.cookies?.cc_ga) {
-      const status = Boolean(this.#cookies_status?.cc_ga === true)
-
-      try {
-        manageGoogleAnalytics({ lifecycle: type, cookie: this.params.cookies.cc_ga, status, path: this.params.path })
-      }
-      catch (err) {
-        console.error(`ERROR: cc-ga.js script not loaded`)
-      }
-    }
-
-    // END: Google Analytics callbacks
-
-    // BEGIN: Google Tag Manager callbacks
-
-    if (this.params.cookies?.cc_gtm) {
-      const status = Boolean(this.#cookies_status?.cc_gtm === true)
-
-      try {
-        manageGoogleTagManager({ lifecycle: type, cookie: this.params.cookies.cc_gtm, status })
-      }
-      catch (err) {
-        console.error(`ERROR: cc-gtm.js script not loaded`)
+    const invokeCallback = (callbackType: keyof Callback) => {
+      const callback = this.params.callback?.[callbackType]
+      if (callback && typeof callback === 'function') {
+        try {
+          callback(this.#cookies_status)
+        }
+        catch (err) {
+          console.error(`ERROR: Function ${callbackType} not found`)
+        }
       }
     }
 
-    // END: Google Tag Manager callbacks
+    const invokeAnalyticsCallback = (cookieType: AnalyticsType) => {
+      const status = Boolean(this.#cookies_status?.[cookieType] === true)
+      const manageFunction = cookieType === 'cc_ga' ? manageGoogleAnalytics : manageGoogleTagManager
 
-    if (type === 'first-load' && this.params.callback?.first_load) {
-      try {
-        const firstLoad = this.params.callback?.first_load
-
-        if (typeof firstLoad === 'function')
-          firstLoad(this.#cookies_status)
-      }
-      catch (err) {
-        console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
+      if (this.params.cookies?.[cookieType]) {
+        try {
+          manageFunction({ lifecycle: type, cookie: this.params.cookies[cookieType], status, path: this.params.path })
+        }
+        catch (err) {
+          console.error(`ERROR: cc-${cookieType}.js script not loaded`)
+        }
       }
     }
-    else if (type === 'load' && this.params.callback?.load) {
-      try {
-        const load = this.params.callback?.load
 
-        if (typeof load === 'function')
-          load(this.#cookies_status)
-      }
-      catch (err) {
-        console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
-      }
-    }
-    else if (type === 'accept' && this.params.callback?.accept) {
-      try {
-        const accept = this.params.callback?.accept
+    invokeAnalyticsCallback('cc_ga')
+    invokeAnalyticsCallback('cc_gtm')
 
-        if (typeof accept === 'function')
-          accept(this.#cookies_status)
-      }
-      catch (err) {
-        console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
-      }
-    }
-    else if (type === 'reject' && this.params.callback?.reject) {
-      try {
-        const reject = this.params.callback?.reject
-
-        if (typeof reject === 'function')
-          reject(this.#cookies_status)
-      }
-      catch (err) {
-        console.error(`ERROR: Function ${this.params.callback?.first_load} not found`)
-      }
+    switch (type) {
+      case 'first-load':
+        invokeCallback('first_load')
+        break
+      case 'load':
+        invokeCallback('load')
+        break
+      case 'accept':
+        invokeCallback('accept')
+        break
+      case 'reject':
+        invokeCallback('reject')
+        break
+      default:
+        break
     }
   }
 
@@ -637,12 +677,11 @@ export class CookiesConsent {
   }
 
   removeCookies() {
-    const cookies = document.cookie
-    const ca = cookies.split(';')
+    const cookies = document.cookie.split(';')
 
-    for (let i = 0; i < ca.length; i++) {
-      const key = ca[i].split('=')
-      document.cookie = `${key[0]}="";expires=Thu, 01 Jan 1970 00:00:00 UTC;${this.params.path}`
-    }
+    cookies.forEach((cookie) => {
+      const [key] = cookie.trim().split('=')
+      document.cookie = `${key}=""; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${this.params.path}`
+    })
   }
 }
