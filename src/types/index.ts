@@ -23,7 +23,6 @@ export interface CookiesConsentParams {
 
   content: Content
 
-  // cookies_status: { [key: string]: boolean }
   cookies?: { [key: string]: Cookie }
 
   callback?: {
