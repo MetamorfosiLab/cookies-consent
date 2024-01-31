@@ -35,11 +35,26 @@ const cookiesConsent = new CookiesConsent({
       </p>
       `,
     },
-    cc_ga: {
-      name: 'cc_ga',
-      title: 'Google Analytics',
-      description: '<p>GA Cookies 🍪.</p>',
-      code: 'G-XXXXXXXXXX',
+    // cc_ga: {
+    //   name: 'cc_ga',
+    //   title: 'Google Analytics',
+    //   description: '<p>GA Cookies 🍪.</p>',
+    //   code: 'G-XXXXXXXXXX',
+    // },
+    analytics: {
+      name: 'analytics',
+      title: 'Analytics',
+      description: '<p>Analytics Cookies 🍪.</p>',
+      cookies: [
+        {
+          name: 'cc_ga',
+          code: 'G-XXXXXXXXXX',
+        },
+        {
+          name: 'cc_gtm',
+          code: 'GTM-XXXXXXX',
+        },
+      ],
     },
   },
   // #endregion cookies

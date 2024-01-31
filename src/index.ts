@@ -10,6 +10,7 @@ import type {
 import { manageGoogleAnalytics } from './modules/cc-ga'
 import { manageGoogleTagManager } from './modules/cc-gtm'
 import { contentDefault } from './shared/content-default'
+import type { Cookie } from './types/cookie.types'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
@@ -50,16 +51,35 @@ export class CookiesConsent {
   checkCookies() {
     document.cookie.split(' ').forEach((cookie) => {
       const [name] = cookie.split('=')
-      this.#cookies_status[name] = true
+      this.#cookies_status[name].status = true
     })
+  }
+
+  #isCookiesGroup(cookie: Cookie) {
+    return 'cookies' in cookie
   }
 
   checkParameters() {
     this.params = this.params || {}
     this.params.cookies = this.params.cookies || {}
 
-    for (const cookie in this.params.cookies)
-      this.#cookies_status[this.params.cookies[cookie]?.name] = false
+    for (const cookie in this.params.cookies) {
+      if (!this.#isCookiesGroup(this.params.cookies[cookie])) {
+        this.#cookies_status[this.params.cookies[cookie]?.name] = {
+          status: false,
+          ...this.params.cookies[cookie],
+        }
+      }
+      else {
+        this.params.cookies[cookie].cookies?.forEach((childCookie) => {
+          this.#cookies_status[childCookie.name] = {
+            status: false,
+            parent: this.params.cookies?.[cookie],
+            ...childCookie,
+          }
+        })
+      }
+    }
 
     this.params.mainWindowSettings ??= false
     this.params.position ??= 'bottom-left'
@@ -456,7 +476,7 @@ export class CookiesConsent {
     setCookie(this.#cookie_name, value)
 
     Object.entries(this.#cookies_status).forEach(([key, value]) => {
-      value && setCookie(key, btoa(`${key}:${Date.now()}`))
+      value.status && setCookie(key, btoa(`${key}:${Date.now()}`))
     })
 
     this.#answered = true
@@ -466,21 +486,26 @@ export class CookiesConsent {
     if (this.#cookies_status) {
       if ($type === 'accept_all') {
         for (const cookie in this.#cookies_status)
-          this.#cookies_status[cookie] = true
+          this.#cookies_status[cookie].status = true
       }
       else if ($type === 'reject_all') {
         for (const cookie in this.#cookies_status)
-          this.#cookies_status[cookie] = false
+          this.#cookies_status[cookie].status = false
       }
       else if ($type === 'selection') {
         const chk_cookie: NodeListOf<HTMLInputElement> = document.querySelectorAll('.cc-window-settings-cookie-value .cc-cookie-checkbox')
 
-        for (let i = 0; i < chk_cookie.length; i++) {
-          const key = chk_cookie[i].dataset.name
+        chk_cookie.forEach((checkbox) => {
+          const cookieName = checkbox.dataset.name
 
-          if (key)
-            this.#cookies_status[key] = chk_cookie[i].checked
-        }
+          Object.entries(this.#cookies_status).forEach(([key, value]) => {
+            if (cookieName && value?.name === cookieName)
+              this.#cookies_status[cookieName].status = checkbox.checked
+
+            if (cookieName && value.parent?.name === cookieName)
+              this.#cookies_status[key].status = checkbox.checked
+          })
+        })
       }
     }
   }
@@ -499,7 +524,7 @@ export class CookiesConsent {
     }
 
     const invokeAnalyticsCallback = (cookieType: AnalyticsType) => {
-      const status = Boolean(this.#cookies_status?.[cookieType] === true)
+      const status = Boolean(this.#cookies_status?.[cookieType].status === true)
       const manageFunction = cookieType === 'cc_ga' ? manageGoogleAnalytics : manageGoogleTagManager
 
       if (this.params.cookies?.[cookieType]) {
