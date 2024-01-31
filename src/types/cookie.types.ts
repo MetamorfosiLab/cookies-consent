@@ -41,5 +41,10 @@ export interface Cookie {
    */
   code?: string
 
-  cookies?: Array<Omit<Cookie, 'title' | 'description'>>
+  /**
+   * Define this property if the cookie is a parent of other cookies.
+   * So when the parent cookie is accepted, all its children will be accepted too.
+   * If the parent cookie is rejected, all its children will be rejected too.
+   */
+  cookies?: Array<Omit<Cookie, 'title' | 'description' | 'cookies'>>
 }

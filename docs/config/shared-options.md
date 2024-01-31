@@ -86,7 +86,7 @@ Parameters that define the message content.
 
 ## cookies
 
-- **Type:** [`Cookies`](../types/cookies-type.md)
+- **Type:** [`Cookie[]`](../types/cookies-type.md)
 - **Reference:** [Cookies Options](./cookies-options.md)
 - **Example:**
 
