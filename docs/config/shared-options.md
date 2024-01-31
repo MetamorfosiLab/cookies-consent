@@ -83,6 +83,9 @@ Determines if the window will be shown with an animation. This does not affect t
 
 - **Type:** [`Content`](../types/content-type.md)
 - **Reference:** [Content Options](./content-options.md)
+- **Example:**
+
+<<< ../../src/examples/main.ts#content
 
 Parameters that define the message content.
 

@@ -6,6 +6,7 @@ const cookiesConsent = new CookiesConsent({
   expirationDays: 182, // half year
   buttons: ['accept', 'settings', 'reject'],
 
+  // #region content
   content: {
     title: 'This website is using Cookies!',
     message: `
@@ -21,6 +22,7 @@ const cookiesConsent = new CookiesConsent({
     </p>
   `,
   },
+  // #endregion content
 
   // #region cookies
   cookies: {
