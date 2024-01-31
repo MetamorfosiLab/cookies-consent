@@ -40,4 +40,6 @@ export interface Cookie {
    * Google Analytics code for global site tag (gtag.js).
    */
   code?: string
+
+  cookies?: Array<Omit<Cookie, 'title' | 'description'>>
 }

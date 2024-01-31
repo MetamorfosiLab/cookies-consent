@@ -18,7 +18,7 @@ export interface Cookies {
    * Custom cookies can be added using their respective names as keys.
    * The values are instances of the `Cookie` type.
    */
-  [key: string]: Cookie
+  [cookieName: string]: Cookie
 }
 // #endregion CookiesInterface
 
@@ -31,7 +31,10 @@ export interface CookiesStatus {
    * Status of each custom cookie, identified by their respective names.
    * The values are boolean flags indicating whether the cookie is accepted or rejected.
    */
-  [key: keyof Cookies]: boolean | undefined
+  [key: keyof Cookies]: {
+    status: boolean
+    parent?: Cookie
+  } & Cookie
 }
 // #endregion CookiesStatusInterface
 
