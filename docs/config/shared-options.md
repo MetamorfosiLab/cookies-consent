@@ -11,7 +11,6 @@ Specifies the number of days the cookie will be valid. If not specified, the coo
 ## path
 
 - **Type:** `string`
-- **Values:** Absolute path.
 - **Default:** `"/"`
 
 Tells the browser what path to the directory the cookie belongs to.
@@ -19,7 +18,6 @@ Tells the browser what path to the directory the cookie belongs to.
 ## sameSite
 
 - **Type:** `'strict' | 'lax' | 'none'`
-- **Values:** `'strict'`, `'lax'`, `'none'`.
 - **Default:** `'lax'`
 - **Reference:** [SameSite cookies – HTTP - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite)
 
@@ -58,7 +56,6 @@ List of pages that will be excluded from showing the cookies message.
 ## hideDescription
 
 - **Type:** `boolean`
-- **Values:** `true`, `false`.
 - **Default:** `true`
 
 Determines if the description of the cookies in the settings window appears collapsed or visible.
@@ -66,7 +63,6 @@ Determines if the description of the cookies in the settings window appears coll
 ## mainWindowSettings
 
 - **Type:** `boolean`
-- **Values:** `true`, `false`.
 - **Default:** `false`
 
 Set the settings window as the main. This window will be displayed when the page is accessed for the first time or when we click on the dismiss button to configure cookies.
@@ -74,7 +70,6 @@ Set the settings window as the main. This window will be displayed when the page
 ## animation
 
 - **Type:** `boolean`
-- **Values:** `true`, `false`.
 - **Default:** `true`
 
 Determines if the window will be shown with an animation. This does not affect the information and settings windows.
