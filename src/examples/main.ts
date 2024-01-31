@@ -25,8 +25,8 @@ const cookiesConsent = new CookiesConsent({
   // #endregion content
 
   // #region cookies
-  cookies: {
-    essential_cookie: {
+  cookies: [
+    {
       name: 'essential_cookie',
       title: 'Essential Cookies',
       description: `
@@ -35,13 +35,7 @@ const cookiesConsent = new CookiesConsent({
       </p>
       `,
     },
-    // cc_ga: {
-    //   name: 'cc_ga',
-    //   title: 'Google Analytics',
-    //   description: '<p>GA Cookies 🍪.</p>',
-    //   code: 'G-XXXXXXXXXX',
-    // },
-    analytics: {
+    {
       name: 'analytics',
       title: 'Analytics',
       description: '<p>Analytics Cookies 🍪.</p>',
@@ -56,7 +50,7 @@ const cookiesConsent = new CookiesConsent({
         },
       ],
     },
-  },
+  ],
   // #endregion cookies
 })
 // #endregion callbacks

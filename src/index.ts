@@ -59,9 +59,13 @@ export class CookiesConsent {
     return 'cookies' in cookie
   }
 
+  #searchCookie(name: string) {
+    return this.params.cookies?.find(cookie => cookie.name === name)
+  }
+
   checkParameters() {
     this.params = this.params || {}
-    this.params.cookies = this.params.cookies || {}
+    this.params.cookies = this.params.cookies || []
 
     for (const cookie in this.params.cookies) {
       if (!this.#isCookiesGroup(this.params.cookies[cookie])) {
@@ -212,12 +216,12 @@ export class CookiesConsent {
 
     this.createSettingsHeader(divCookieSettings)
 
-    for (const cookie in this.params.cookies) {
-      const cookieElement = this.createCookieElement(cookie)
+    this.params.cookies?.forEach((cookie) => {
+      const cookieElement = this.createCookieElement(cookie.name)
 
       if (cookieElement)
         divCookieSettings.appendChild(cookieElement)
-    }
+    })
 
     this.createSettingsButtons(divCookieSettings)
 
@@ -254,11 +258,13 @@ export class CookiesConsent {
     return divCookie
   }
 
-  createCookieTitle(cookie: string, elem_id: string) {
-    if (this.params.cookies?.[cookie]?.title) {
-      const divTitle = this.createElement('div', 'cc-window-settings-cookie-title', this.params.cookies[cookie].title)
+  createCookieTitle(cookieName: string, elem_id: string) {
+    const cookie = this.#searchCookie(cookieName)
 
-      if (this.params.cookies[cookie]?.description && this.params.hideDescription) {
+    if (cookie) {
+      const divTitle = this.createElement('div', 'cc-window-settings-cookie-title', cookie.title)
+
+      if (cookie.description && this.params.hideDescription) {
         divTitle.innerHTML += ` <div id="cc-window-icon-dropdown-id-${elem_id}">&#10095;</div>`
         divTitle.classList.add('cc-window-settings-cookie-title-dropdown')
 
@@ -271,29 +277,36 @@ export class CookiesConsent {
     }
   }
 
-  createCookieDescription(cookie: string, elem_id: string) {
-    if (this.params.cookies?.[cookie]?.description) {
+  createCookieDescription(cookieName: string, elem_id: string) {
+    const cookie = this.#searchCookie(cookieName)
+
+    if (cookie?.description) {
       const divDescription = document.createElement('div')
       divDescription.id = `cc-window-desc-id-${elem_id}`
       divDescription.className = 'cc-window-settings-cookie-desc'
 
-      if (this.params.cookies[cookie]?.title && this.params.hideDescription)
+      if (cookie?.title && this.params.hideDescription)
         divDescription.style.display = 'none'
 
-      divDescription.innerHTML = this.params.cookies[cookie].description ?? ''
+      divDescription.innerHTML = cookie.description ?? ''
       return divDescription
     }
   }
 
-  createCookieStatus(cookie: string) {
-    let checked = ''
-    if (this.#answered && this.params.cookies?.[cookie]?.name)
-      checked = this.#cookies_status[this.params.cookies[cookie].name] ? ' checked="checked"' : ''
-    else
-      checked = this.params.cookies?.[cookie].checked ? ' checked="checked"' : ''
+  createCookieStatus(cookieName: string) {
+    const cookie = this.#searchCookie(cookieName)
 
-    const disabled = this.params.cookies?.[cookie].disabled && checked !== '' ? ' disabled="disabled"' : ''
-    const name = this.params.cookies?.[cookie].name ?? ''
+    if (!cookie)
+      return
+
+    let checked = ''
+    if (this.#answered)
+      checked = this.#cookies_status[cookie.name] ? ' checked="checked"' : ''
+    else
+      checked = cookie.checked ? ' checked="checked"' : ''
+
+    const disabled = cookie.disabled && checked !== '' ? ' disabled="disabled"' : ''
+    const name = cookie.name ?? ''
 
     const divStatus = document.createElement('div')
     divStatus.className = 'cc-window-settings-cookie-value'
@@ -526,10 +539,11 @@ export class CookiesConsent {
     const invokeAnalyticsCallback = (cookieType: AnalyticsType) => {
       const status = Boolean(this.#cookies_status?.[cookieType].status === true)
       const manageFunction = cookieType === 'cc_ga' ? manageGoogleAnalytics : manageGoogleTagManager
+      const cookie = this.#searchCookie(cookieType)
 
-      if (this.params.cookies?.[cookieType]) {
+      if (cookie) {
         try {
-          manageFunction({ lifecycle: type, cookie: this.params.cookies[cookieType], status, path: this.params.path })
+          manageFunction({ lifecycle: type, cookie, status, path: this.params.path })
         }
         catch (err) {
           console.error(`ERROR: cc-${cookieType}.js script not loaded`)
