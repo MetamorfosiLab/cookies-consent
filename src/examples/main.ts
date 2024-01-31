@@ -13,8 +13,6 @@ const cookiesConsent = new CookiesConsent({
         This site uses cookies (or similar) to measure traffic to this website. By clicking ACCEPT ALL, you are agreeing to our and our partners' use of cookies. You can change your cookie preferences at any time. For more information, please visit, our Cookie Notice.
       </p>
       `,
-    // policy: 'Privacy Policy',
-    // policyLink: 'https://gdpr-info.eu/',
     settingsFooter: `
     <p>
       However, if you use your browser settings to block all cookies (including essential cookies) you may not be able to access all or parts of our website.
