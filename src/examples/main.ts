@@ -1,6 +1,7 @@
+import '../assets/css/style.css'
 import { CookiesConsent } from '../index'
 
-const _cc = new CookiesConsent({
+const cookiesConsent = new CookiesConsent({
   expirationDays: 182, // half year
   buttons: ['accept', 'settings', 'reject'],
 
@@ -50,4 +51,9 @@ const _cc = new CookiesConsent({
       code: 'G-SNGNJYXMJJ',
     },
   },
+})
+
+const cookieSettings = document.querySelector('#cookie-settings')
+cookieSettings?.addEventListener('click', () => {
+  cookiesConsent.showhideSettings()
 })

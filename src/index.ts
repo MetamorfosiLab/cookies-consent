@@ -429,44 +429,34 @@ export class CookiesConsent {
     const btnSettings = document.getElementById('cc-btn-settings')
     const btnDismiss = document.getElementById('cc-btn-dismiss')
 
-    if (btnAccept) {
-      btnAccept.addEventListener('click', () => {
-        this.removeHtmlMessage()
-        this.printDismissButton()
-        this.setCookieStatusInParams('accept_all')
-        this.setCookieConsent('accept')
-        this.callbackFunction('accept')
-      })
-    }
+    btnAccept?.addEventListener('click', () => {
+      this.removeHtmlMessage()
+      this.printDismissButton()
+      this.setCookieStatusInParams('accept_all')
+      this.setCookieConsent('accept')
+      this.callbackFunction('accept')
+    })
 
-    if (btnReject) {
-      btnReject.addEventListener('click', () => {
-        this.removeHtmlMessage()
-        this.printDismissButton()
-        this.setCookieStatusInParams('reject_all')
-        this.setCookieConsent('reject')
-        this.callbackFunction('reject')
-      })
-    }
+    btnReject?.addEventListener('click', () => {
+      this.removeHtmlMessage()
+      this.printDismissButton()
+      this.setCookieStatusInParams('reject_all')
+      this.setCookieConsent('reject')
+      this.callbackFunction('reject')
+    })
 
-    if (btnInfo) {
-      btnInfo.addEventListener('click', () => {
-        this.showhideInfo()
-      })
-    }
+    btnInfo?.addEventListener('click', () => {
+      this.showhideInfo()
+    })
 
-    if (btnDismiss) {
-      btnDismiss.addEventListener('click', () => {
-        this.printHtmlMessage()
-        this.removeDismissButton()
-      })
-    }
+    btnDismiss?.addEventListener('click', () => {
+      this.printHtmlMessage()
+      this.removeDismissButton()
+    })
 
-    if (btnSettings) {
-      btnSettings.addEventListener('click', () => {
-        this.showhideSettings()
-      })
-    }
+    btnSettings?.addEventListener('click', () => {
+      this.showhideSettings()
+    })
   }
 
   attachEventsSettingsButtons() {
