@@ -16,7 +16,7 @@ hero:
       text: View on GitHub
       link: https://github.com/MetamorfosiLab/cookies-consent
   image:
-    src: /cookies-consent-logo-large.png
+    src: /cookiesconsent-logo-large.png
     alt: Cookies Consent
 
 features:
