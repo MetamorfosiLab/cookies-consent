@@ -12,7 +12,7 @@ export default defineConfig({
       name: 'CookiesConsent',
       fileName: 'index',
     },
-    // sourcemap: true,
+    cssCodeSplit: true,
   },
   resolve: {
     alias: {

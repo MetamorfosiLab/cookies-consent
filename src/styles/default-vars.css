@@ -1,0 +1,92 @@
+/* #region DefaultVariables */
+:root {
+	--cc-window-bg: #fff;
+	--cc-window-padding: 24px;
+	--cc-window-border: 0;
+	--cc-window-radius: 24px;
+	--cc-window-width: 500px;
+	--cc-window-margin-top: 24px;
+	--cc-window-margin-left: 48px;
+	--cc-window-margin-right: 48px;
+	--cc-window-margin-bottom: 24px;
+
+	--cc-title-font-size: 16px;
+	--cc-title-font-weight: 600;
+	--cc-title-text-color: #001D35;
+	--cc-title-padding: 24px 24px 0 24px;
+
+	--cc-message-padding: 8px 24px 24px 24px;
+	--cc-message-line-height: 1.2rem;
+	--cc-message-font-size: 14px;
+	--cc-message-font-weight: 400;
+	--cc-message-text-color: #000;
+	--cc-message-link-color: #01579B;
+	--cc-message-link-decoration: underline;
+	--cc-message-link-font-weight: 600;
+
+	--cc-settings-margin-top: 2rem;
+	--cc-settings-margin-bottom: 2rem;
+	--cc-settings-separator-color: #eee;
+	--cc-settings-title-size: 14px;
+	--cc-settings-title-weight: 600;
+	--cc-settings-font-size: 14px;
+
+	--cc-buttons-align: right;
+	--cc-buttons-padding: 0 0 16px 0;
+
+	--cc-btn-font-size: 14px;
+	--cc-btn-font-weight: 600;
+	--cc-btn-margin: 24px 2px 0 2px;
+	--cc-btn-padding: 6px 12px;
+	--cc-btn-radius: 50px;
+
+	--cc-btn-accept-bg: #388E3C;
+	--cc-btn-accept-text-color: #ffffff;
+	--cc-btn-accept-border: 0;
+	--cc-btn-accept-bg-hover: #1B5E20;
+
+	--cc-btn-reject-bg: transparent;
+	--cc-btn-reject-text-color: #C62828;
+	--cc-btn-reject-border: 0;
+	--cc-btn-reject-bg-hover: #FFEBEE;
+
+	--cc-btn-info-bg: transparent;
+	--cc-btn-info-text-color: #424242;
+	--cc-btn-info-border: 0;
+	--cc-btn-info-bg-hover: #E0E0E0;
+
+	--cc-btn-settings-bg: #9E9E9E;
+	--cc-btn-settings-text-color: #ffffff;
+	--cc-btn-settings-border: 0;
+	--cc-btn-settings-bg-hover: #424242;
+
+	--cc-btn-settings-select-bg: transparent;
+	--cc-btn-settings-select-text-color: #424242;
+	--cc-btn-settings-select-border: 0;
+	--cc-btn-settings-select-bg-hover: #E0E0E0;
+
+	--cc-btn-settings-accept-bg: #388E3C;
+	--cc-btn-settings-accept-text-color: #ffffff;
+	--cc-btn-settings-accept-border: 0;
+	--cc-btn-settings-accept-bg-hover: #1B5E20;
+
+	--cc-btn-dismiss-bg: #ddd;
+	--cc-btn-dismiss-text-color: #000;
+	--cc-btn-dismiss-border: 0;
+	--cc-btn-dismiss-font-size: 14px;
+	--cc-btn-dismiss-font-weight: 400;
+	--cc-btn-dismiss-padding: 12px 16px;
+	--cc-btn-dismiss-radius: 24px;
+
+	--cc-btn-close-color: #aaa;
+	--cc-btn-close-color-hover: #000;
+
+	--cc-popup-bg: #fff;
+	--cc-popup-text-color: #333;
+	--cc-popup-width: 600px;
+	--cc-popup-radius: 24px;
+
+	--cc-animation-duration: 1s;
+	--cc-animation-delay: 0.1s;
+}
+/* #endregion DefaultVariables */

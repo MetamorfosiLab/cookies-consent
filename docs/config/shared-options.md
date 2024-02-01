@@ -100,3 +100,10 @@ Parameters that define the custom cookies.
 - **Reference:** [Callback Functions](./callback-functions.md)
 
 Functions that will be invoked after some events: first load, every load, after accepting cookies, and after rejecting cookies. Callback functions allow us to control the actions that must be executed depending on the state of the cookies.
+
+## theme
+
+- **Type:** `darkTheme | contrastTheme | smoothTheme | undefined`
+- **Default:** `undefined`
+
+Theme that will be applied to the cookies consent. Need to import module and add to the configuration.

@@ -21,6 +21,7 @@ export class CookiesConsent {
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
     this.#checkParameters()
+    this.#insertTheme()
 
     if (!this.#isPageAllowedToShowConsent())
       return
@@ -33,6 +34,14 @@ export class CookiesConsent {
       this.#checkCookies()
       this.#printDismissButton()
       this.#callbackFunction('load')
+    }
+  }
+
+  #insertTheme() {
+    if (this.params.theme) {
+      const style = document.createElement('style')
+      style.innerHTML = this.params.theme
+      document.head.appendChild(style)
     }
   }
 

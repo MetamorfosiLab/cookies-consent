@@ -2,24 +2,17 @@
 
 Dark theme is a simple theme that is designed to be a starting point for your own customizations.
 
-## Installation
+## Usage
 
-You need to import this css files `before` the main CSS file.
+```typescript
+import { CookiesConsent, darkTheme } from '../index'
 
-::: code-group
+const cookiesConsent = new CookiesConsent({
+  // other configurations
 
-```postcss [postcss]
-@import '@metamorfosilab/cookies-consent/dist/themes/dark.css';
+  theme: darkTheme, // [!code highlight]
+})
 ```
-
-```scss [scss]
-@import '~@metamorfosilab/cookies-consent/dist/themes/dark.css';
-```
-
-```css [css]
-@import '@metamorfosilab/cookies-consent/dist/themes/dark.css';
-```
-:::
 
 ## Preview
 

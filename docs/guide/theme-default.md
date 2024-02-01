@@ -4,7 +4,7 @@ The default theme is a simple theme that is designed to be a starting point for 
 
 ## Installation
 
-For this theme, you don't need to import any CSS file. It's already included in the main CSS file.
+For this theme, you don't need to specify `theme` property in the configuration object.
 
 ## Preview
 

@@ -30,6 +30,7 @@ export default defineConfig({
       '/guide/': { base: '/guide/', items: sidebarGuide() },
       '/config/': { base: '/config/', items: sidebarGuide() },
       '/types/': { base: '/types/', items: sidebarGuide() },
+      '/styles/': { base: '/styles/', items: sidebarGuide() },
     },
 
     socialLinks: [
@@ -102,6 +103,17 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { text: 'Dark', link: 'theme-dark' },
         { text: 'Smooth', link: 'theme-smooth' },
         { text: 'Contrast', link: 'theme-contrast' },
+        { text: 'Custom', link: 'theme-custom' },
+      ],
+    },
+    {
+      text: 'Styles',
+      base: '/styles/',
+      items: [
+        { text: 'General', link: 'general' },
+        // { text: 'Typography', link: 'typography' },
+        // { text: 'Buttons', link: 'buttons' },
+        // { text: 'Layout', link: 'layout' },
       ],
     },
     {

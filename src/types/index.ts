@@ -50,5 +50,7 @@ export interface CookiesConsentParams {
   cookies?: Cookie[]
 
   callback?: Callback
+
+  theme?: string
 }
 // #endregion params
