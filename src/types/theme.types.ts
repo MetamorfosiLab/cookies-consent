@@ -1,122 +1,79 @@
+import type { Properties as CSSProperties } from 'csstype'
+
 export interface Theme {
-  window?: {
-    background?: string
-    padding?: string
-    border?: string
-    radius?: string
-    width?: string
-    marginTop?: string
-    marginLeft?: string
-    marginRight?: string
-    marginBottom?: string
+  window?: Pick<CSSProperties, 'background' | 'padding' | 'border' | 'borderRadius' | 'width' | 'marginTop' | 'marginLeft' | 'marginRight' | 'marginBottom'>
+
+  title?: Pick<CSSProperties, 'fontSize' | 'fontWeight' | 'padding'> & {
+    textColor?: CSSProperties['color']
   }
 
-  title?: {
-    fontSize?: string
-    fontWeight?: string
-    textColor?: string
-    padding?: string
+  message?: Pick<CSSProperties, 'padding' | 'lineHeight' | 'fontSize' | 'fontWeight'> & {
+    textColor?: CSSProperties['color']
+    linkColor?: CSSProperties['color']
+    linkDecoration?: CSSProperties['textDecoration']
+    linkFontWeight?: CSSProperties['fontWeight']
   }
 
-  message?: {
-    padding?: string
-    lineHeight?: string
-    fontSize?: string
-    fontWeight?: string
-    textColor?: string
-    linkColor?: string
-    linkDecoration?: string
-    linkFontWeight?: string
+  settings?: Pick<CSSProperties, 'marginTop' | 'marginBottom' | 'fontSize'> & {
+    separatorColor?: CSSProperties['color']
+    titleSize?: CSSProperties['fontSize']
+    titleWeight?: CSSProperties['fontWeight']
   }
 
-  settings?: {
-    marginTop?: string
-    marginBottom?: string
-    separatorColor?: string
-    titleSize?: string
-    titleWeight?: string
-    fontSize?: string
+  buttons?: Pick<CSSProperties, 'padding'> & {
+    align?: CSSProperties['textAlign']
   }
 
-  buttons?: {
-    align?: string
-    padding?: string
+  btn?: Pick<CSSProperties, 'fontSize' | 'fontWeight' | 'margin' | 'padding'> & {
+    radius?: CSSProperties['borderRadius']
   }
 
-  btn?: {
-    fontSize?: string
-    fontWeight?: string
-    margin?: string
-    padding?: string
-    radius?: string
+  btnAccept?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnAccept?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnReject?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnReject?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnInfo?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnInfo?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnSettings?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnSettings?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnSettingsSelect?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnSettingsSelect?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnSettingsAccept?: Pick<CSSProperties, 'background' | 'border'> & {
+    textColor?: CSSProperties['color']
+    backgroundHover?: CSSProperties['background']
   }
 
-  btnSettingsAccept?: {
-    background?: string
-    textColor?: string
-    border?: string
-    backgroundHover?: string
+  btnDismiss?: Pick<CSSProperties, 'background' | 'border' | 'fontSize' | 'fontWeight' | 'padding'> & {
+    textColor?: CSSProperties['color']
+    radius?: CSSProperties['borderRadius']
   }
 
-  btnDismiss?: {
-    background?: string
-    textColor?: string
-    border?: string
-    fontSize?: string
-    fontWeight?: string
-    padding?: string
-    radius?: string
+  btnClose?: Pick<CSSProperties, 'color'> & {
+    colorHover?: CSSProperties['color']
   }
 
-  btnClose?: {
-    color?: string
-    colorHover?: string
-  }
-
-  popup?: {
-    background?: string
-    textColor?: string
-    width?: string
-    radius?: string
+  popup?: Pick<CSSProperties, 'background' | 'width'> & {
+    textColor?: CSSProperties['color']
+    radius?: CSSProperties['borderRadius']
   }
 
   animation?: {
-    duration?: string
-    delay?: string
+    duration?: CSSProperties['animationDuration']
+    delay?: CSSProperties['animationDelay']
   }
 }
