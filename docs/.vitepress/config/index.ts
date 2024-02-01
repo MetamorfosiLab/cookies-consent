@@ -13,15 +13,17 @@ export default defineConfig({
   lastUpdated: true,
   cleanUrls: true,
 
-  head: [['link', { rel: 'icon', href: '/cookies-consent/favicon.ico' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/cookies-consent/favicon.ico' }],
+    ['meta', { name: 'theme-color', content: '#dc9a09' }],
+    ['meta', { name: 'og:type', content: 'website' }],
+    ['meta', { name: 'og:locale', content: 'en' }],
+    ['meta', { name: 'og:site_name', content: 'CookiesConsent' }],
+    ['meta', { name: 'og:image', content: 'https://metamorfosilab.github.io/cookies-consent/cookiesconsent-og.png' }],
+  ],
 
   themeConfig: {
     logo: '/logo.svg',
-    // https://vitepress.dev/reference/default-theme-config
-    // nav: [
-    //   { text: 'Home', link: '/' },
-    //   { text: 'Guide', link: '/guide/getting-started' },
-    // ],
     nav: nav(),
 
     sidebar: {
