@@ -34,6 +34,9 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/MetamorfosiLab/cookies-consent' },
+      { icon: 'linkedin', link: 'https://www.linkedin.com/company/metamorfosi-agency/' },
+      { icon: 'instagram', link: 'https://www.instagram.com/metamorfosi.agency/' },
+      { icon: 'youtube', link: 'https://youtube.com/@metamorfosi.agency' },
     ],
 
     editLink: {
