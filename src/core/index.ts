@@ -9,6 +9,7 @@ import type {
 } from '../types'
 import { contentDefault } from '../shared/content-default'
 import type { Cookie } from '../types/cookie.types'
+import { nanoid } from '../utils/nanoid.utils'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
@@ -249,7 +250,7 @@ export class CookiesConsent {
   }
 
   #createCookieElement(cookie: string) {
-    const elem_id = globalThis.crypto.randomUUID()
+    const elem_id = nanoid()
     const divCookie = document.createElement('div')
     divCookie.setAttribute('id', cookie)
     divCookie.className = 'cc-window-settings-cookie'
