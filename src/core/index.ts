@@ -1,5 +1,4 @@
 import type {
-  AnalyticsType,
   Callback,
   CookiesConsentParams,
   CookiesConsentStatusType,
@@ -15,8 +14,9 @@ export class CookiesConsent {
   private params: CookiesConsentParams
 
   #answered = false
-  #cookies_status: CookiesStatus = {}
-  #cookie_name = 'consentcookies_status'
+  #cookiesStatus: CookiesStatus = {}
+  #COOKIE_NAME = 'consentcookies_status'
+  #cookiesWithManageFunction: Cookie[] = []
 
   constructor(params: CookiesConsentParams) {
     this.params = params ?? {}
@@ -43,19 +43,19 @@ export class CookiesConsent {
   }
 
   #answeredConsent() {
-    this.#answered = (document.cookie.split(';').some(c => c.trim().startsWith(this.#cookie_name)) || '') !== ''
+    this.#answered = (document.cookie.split(';').some(c => c.trim().startsWith(this.#COOKIE_NAME)) || '') !== ''
     return this.#answered
   }
 
   #isInternalCookie(cookieName: Cookie['name']) {
-    return Boolean(this.#cookies_status[cookieName])
+    return Boolean(this.#cookiesStatus[cookieName])
   }
 
   #checkCookies() {
     document.cookie.split(' ').forEach((cookie) => {
       const [name] = cookie.split('=')
       if (this.#isInternalCookie(name))
-        this.#cookies_status[name].status = true
+        this.#cookiesStatus[name].status = true
     })
   }
 
@@ -71,28 +71,38 @@ export class CookiesConsent {
     if (!name)
       return undefined
 
-    return this.#cookies_status[name]
+    return this.#cookiesStatus[name]
   }
 
   #checkParameters() {
     this.params = this.params || {}
     this.params.cookies = this.params.cookies || []
 
-    for (const cookie in this.params.cookies) {
-      if (!this.#isCookiesGroup(this.params.cookies[cookie])) {
-        this.#cookies_status[this.params.cookies[cookie]?.name] = {
-          status: false,
-          ...this.params.cookies[cookie],
-        }
-      }
-      else {
-        this.params.cookies[cookie].cookies?.forEach((childCookie) => {
-          this.#cookies_status[childCookie.name] = {
+    for (const key in this.params.cookies) {
+      const cookie = this.params.cookies[key]
+
+      if (cookie) {
+        if (cookie.manageFunction)
+          this.#cookiesWithManageFunction.push(cookie)
+
+        if (!this.#isCookiesGroup(cookie)) {
+          this.#cookiesStatus[cookie?.name] = {
             status: false,
-            parent: this.params.cookies?.[cookie],
-            ...childCookie,
+            ...cookie,
           }
-        })
+        }
+        else {
+          cookie.cookies?.forEach((childCookie) => {
+            if (childCookie.manageFunction)
+              this.#cookiesWithManageFunction.push(childCookie)
+
+            this.#cookiesStatus[childCookie.name] = {
+              status: false,
+              parent: this.params.cookies?.[key],
+              ...childCookie,
+            }
+          })
+        }
       }
     }
 
@@ -504,9 +514,9 @@ export class CookiesConsent {
       document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${this.params.path}; ${sameSite};`
     }
 
-    setCookie(this.#cookie_name, value)
+    setCookie(this.#COOKIE_NAME, value)
 
-    Object.entries(this.#cookies_status).forEach(([key, value]) => {
+    Object.entries(this.#cookiesStatus).forEach(([key, value]) => {
       if (value.status)
         setCookie(key, btoa(`${key}:${Date.now()}`))
       else
@@ -517,14 +527,14 @@ export class CookiesConsent {
   }
 
   #setCookieStatusInParams($type: CookiesStatusType) {
-    if (this.#cookies_status) {
+    if (this.#cookiesStatus) {
       if ($type === 'accept_all') {
-        for (const cookie in this.#cookies_status)
-          this.#cookies_status[cookie].status = true
+        for (const cookie in this.#cookiesStatus)
+          this.#cookiesStatus[cookie].status = true
       }
       else if ($type === 'reject_all') {
-        for (const cookie in this.#cookies_status)
-          this.#cookies_status[cookie].status = false
+        for (const cookie in this.#cookiesStatus)
+          this.#cookiesStatus[cookie].status = false
       }
       else if ($type === 'selection') {
         const chk_cookie: NodeListOf<HTMLInputElement> = document.querySelectorAll('.cc-window-settings-cookie-value .cc-cookie-checkbox')
@@ -532,7 +542,7 @@ export class CookiesConsent {
         chk_cookie.forEach((checkbox) => {
           const cookieName = checkbox.dataset.name
 
-          Object.entries(this.#cookies_status).forEach(([, cookie]) => {
+          Object.entries(this.#cookiesStatus).forEach(([, cookie]) => {
             if (cookieName && cookie?.name === cookieName)
               cookie.status = checkbox.checked
 
@@ -549,7 +559,7 @@ export class CookiesConsent {
       const callback = this.params.callback?.[callbackType]
       if (callback && typeof callback === 'function') {
         try {
-          callback(this.#cookies_status)
+          callback(this.#cookiesStatus)
         }
         catch (err) {
           console.error(`ERROR: Function ${callbackType} not found`)
@@ -557,22 +567,18 @@ export class CookiesConsent {
       }
     }
 
-    const invokeAnalyticsCallback = (cookieType: AnalyticsType) => {
-      const cookie = this.#searchCookieStatus(cookieType)
-      // const manageFunction = cookieType === 'cc_ga' ? manageGoogleAnalytics : manageGoogleTagManager
+    this.#cookiesWithManageFunction.forEach((elem) => {
+      const cookie = this.#searchCookieStatus(elem.name)
 
       if (cookie && cookie.manageFunction) {
         try {
           cookie.manageFunction({ lifecycle: type, cookie, status: cookie.status, path: this.params.path })
         }
         catch (err) {
-          console.error(`ERROR: cc-${cookieType}.js script not loaded`)
+          console.error(`ERROR: Function manageFunction not found in cookie ${cookie.name}`)
         }
       }
-    }
-
-    invokeAnalyticsCallback('cc_ga')
-    invokeAnalyticsCallback('cc_gtm')
+    })
 
     switch (type) {
       case 'first-load':

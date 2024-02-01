@@ -52,7 +52,7 @@ export interface Cookie {
    * - path: string
    * @param arg
    */
-  manageFunction?: (arg: CookieLifecycleParams) => void
+  manageFunction?: (arg: CookieLifecycleParams) => void | Promise<void>
 
   /**
    * Define this property if the cookie is a parent of other cookies.
