@@ -48,19 +48,31 @@ export class CookiesConsent {
     return this.#answered
   }
 
+  #isInternalCookie(cookieName: Cookie['name']) {
+    return Boolean(this.#cookies_status[cookieName])
+  }
+
   #checkCookies() {
     document.cookie.split(' ').forEach((cookie) => {
       const [name] = cookie.split('=')
-      this.#cookies_status[name].status = true
+      if (this.#isInternalCookie(name))
+        this.#cookies_status[name].status = true
     })
   }
 
-  #isCookiesGroup(cookie: Cookie) {
-    return 'cookies' in cookie
+  #isCookiesGroup(cookie?: Cookie) {
+    return Boolean(cookie?.cookies)
   }
 
-  #searchCookie(name: string) {
+  #searchCookie(name?: string): Cookie | undefined {
     return this.params.cookies?.find(cookie => cookie.name === name)
+  }
+
+  #searchCookieStatus(name?: string) {
+    if (!name)
+      return undefined
+
+    return this.#cookies_status[name]
   }
 
   #checkParameters() {
@@ -258,7 +270,7 @@ export class CookiesConsent {
     return divCookie
   }
 
-  #createCookieTitle(cookieName: string, elem_id: string) {
+  #createCookieTitle(cookieName: Cookie['name'], elem_id: string) {
     const cookie = this.#searchCookie(cookieName)
 
     if (cookie) {
@@ -277,7 +289,7 @@ export class CookiesConsent {
     }
   }
 
-  #createCookieDescription(cookieName: string, elem_id: string) {
+  #createCookieDescription(cookieName: Cookie['name'], elem_id: string) {
     const cookie = this.#searchCookie(cookieName)
 
     if (cookie?.description) {
@@ -293,15 +305,18 @@ export class CookiesConsent {
     }
   }
 
-  #createCookieStatus(cookieName: string) {
+  #createCookieStatus(cookieName: Cookie['name']) {
     const cookie = this.#searchCookie(cookieName)
+    const isGroup = this.#isCookiesGroup(cookie)
 
     if (!cookie)
       return
 
+    const status = (isGroup ? this.#searchCookieStatus(cookie.cookies?.[0].name)?.status : this.#searchCookieStatus(cookieName)?.status) ?? false
+
     let checked = ''
     if (this.#answered)
-      checked = this.#cookies_status[cookie.name] ? ' checked="checked"' : ''
+      checked = status ? ' checked="checked"' : ''
     else
       checked = cookie.checked ? ' checked="checked"' : ''
 
