@@ -44,15 +44,15 @@ Cookies Consent comes with a default stylesheet that you can include in your pro
 ::: code-group
 
 ```postcss [postcss]
-@import '@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+@import '@metamorfosilab/cookies-consent/dist/index.css';
 ```
 
 ```scss [scss]
-@import '~@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+@import '~@metamorfosilab/cookies-consent/dist/index.css';
 ```
 
 ```css [css]
-@import '@metamorfosilab/cookies-consent/dist/cookies-consent.css';
+@import '@metamorfosilab/cookies-consent/dist/index.css';
 ```
 
 :::

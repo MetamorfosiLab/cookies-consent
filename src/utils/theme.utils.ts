@@ -10,7 +10,7 @@ export function convertThemeToCSS(theme: Theme): string {
         convertSectionToCSS(value, `${prefix}${key}`)
       }
       else {
-        const cssVariableName = `--cc-${kebabCase(prefix)}-${kebabCase(key)}`
+        const cssVariableName = `--cc${prefix ? `-${kebabCase(prefix)}` : ''}-${kebabCase(key)}`
         cssString += `${cssVariableName}: ${value};\n`
       }
     })

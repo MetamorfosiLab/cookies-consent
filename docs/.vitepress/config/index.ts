@@ -15,7 +15,6 @@ export default defineConfig({
 
   head: [
     ['link', { rel: 'icon', href: '/cookies-consent/favicon.ico' }],
-    ['meta', { name: 'theme-color', content: '#dc9a09' }],
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:locale', content: 'en' }],
     ['meta', { name: 'og:site_name', content: 'CookiesConsent' }],
@@ -110,10 +109,14 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: 'Styles',
       base: '/styles/',
       items: [
-        { text: 'General', link: 'general' },
-        // { text: 'Typography', link: 'typography' },
-        // { text: 'Buttons', link: 'buttons' },
-        // { text: 'Layout', link: 'layout' },
+        { text: 'Theme', link: 'theme' },
+        { text: 'Window', link: 'window' },
+        { text: 'Title', link: 'title' },
+        { text: 'Message', link: 'message' },
+        { text: 'Settings', link: 'settings' },
+        { text: 'Buttons', link: 'buttons' },
+        { text: 'Popup', link: 'popup' },
+        { text: 'Animation', link: 'animation' },
       ],
     },
     {

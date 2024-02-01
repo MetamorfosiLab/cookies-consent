@@ -2,6 +2,10 @@
 
 Smooth theme is a simple theme that is designed to be a starting point for your own customizations.
 
+:::tip
+Don't forget to include the default stylesheet in your project. [Learn more](../guide/getting-started.md#linking-styles).
+:::
+
 ## Usage
 
 ```typescript
@@ -16,8 +20,8 @@ const cookiesConsent = new CookiesConsent({
 
 ## Preview
 
-![Smooth Theme](../assets/images/themes/cc-theme-smooth.jpeg)
+![Smooth Theme](/themes/cc-theme-smooth.jpeg)
 
 ## Settings Preview
 
-![Smooth Theme Settings](../assets/images/themes/cc-theme-smooth-settings.jpeg)
+![Smooth Theme Settings](/themes/cc-theme-smooth-settings.jpeg)

@@ -1,5 +1,7 @@
 /* #region DefaultVariables */
 :root {
+	--cc-font-family: 'Inter', sans-serif;
+
 	--cc-window-background: #fff;
 	--cc-window-padding: 24px;
 	--cc-window-border: 0;
@@ -14,6 +16,7 @@
 	--cc-title-font-weight: 600;
 	--cc-title-text-color: #001D35;
 	--cc-title-padding: 24px 24px 0 24px;
+	--cc-title-margin-bottom: 16px;
 
 	--cc-message-padding: 8px 24px 24px 24px;
 	--cc-message-line-height: 1.2rem;

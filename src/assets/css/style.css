@@ -2,6 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--cc-window-background: #ed145b;
-}

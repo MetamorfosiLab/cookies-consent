@@ -1,10 +1,10 @@
 import '../assets/css/style.css'
-import { CookiesConsent, contrastTheme, manageGoogleAnalytics, manageGoogleTagManager } from '../index'
+import { CookiesConsent, manageGoogleAnalytics, manageGoogleTagManager } from '../index'
 
 // #region callbacks
 const cookiesConsent = new CookiesConsent({
   expirationDays: 182, // half year
-  buttons: ['accept', 'settings', 'reject'],
+  buttons: ['accept', 'settings', 'info', 'reject'],
 
   // #region content
   content: {
@@ -54,8 +54,6 @@ const cookiesConsent = new CookiesConsent({
     },
   ],
   // #endregion cookies
-
-  theme: contrastTheme,
 })
 // #endregion callbacks
 

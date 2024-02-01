@@ -120,7 +120,7 @@
 	font-weight: var(--cc-title-font-weight, 600);
 	color: var(--cc-title-text-color, #001D35);
 	padding: var(--cc-title-padding, 24px 24px 0 24px);
-	margin-bottom: 1rem;
+	margin-bottom: var(--cc-title-margin-bottom, 16px);
 }
 
 .cc-window .cc-window-message {
