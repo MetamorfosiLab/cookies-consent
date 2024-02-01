@@ -1,21 +1,11 @@
-// ManageGoogleAnalytics.ts
-
-import type { LifecycleType } from '../types'
-import type { Cookie } from '../types/cookie.types'
-
-interface ManageGoogleAnalyticsParams {
-  lifecycle: LifecycleType
-  cookie: Cookie
-  status?: boolean
-  path?: string
-}
+import type { CookieLifecycleParams } from '../types/module.types'
 
 export function manageGoogleAnalytics({
   lifecycle,
   cookie,
   status = false,
   path = '',
-}: ManageGoogleAnalyticsParams) {
+}: CookieLifecycleParams) {
   const code = cookie.code ?? ''
   const onLoad = cookie.onLoad ?? false
 

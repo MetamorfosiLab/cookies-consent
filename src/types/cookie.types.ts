@@ -1,3 +1,5 @@
+import type { CookieLifecycleParams } from './module.types'
+
 /**
  * Define an interface for custom cookies in the cookies settings window.
  */
@@ -40,6 +42,17 @@ export interface Cookie {
    * Google Analytics code for global site tag (gtag.js).
    */
   code?: string
+
+  /**
+   * Function that will be executed when the cookie is accepted or rejected.
+   * The function will receive an object with the following properties:
+   * - lifecycle: 'first-load' | 'load' | 'accept' | 'reject'
+   * - cookie: Cookie
+   * - status: boolean
+   * - path: string
+   * @param arg
+   */
+  manageFunction?: (arg: CookieLifecycleParams) => void
 
   /**
    * Define this property if the cookie is a parent of other cookies.

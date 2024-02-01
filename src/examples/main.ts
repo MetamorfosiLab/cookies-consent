@@ -1,5 +1,5 @@
 import '../assets/css/style.css'
-import { CookiesConsent } from '../index'
+import { CookiesConsent, manageGoogleAnalytics, manageGoogleTagManager } from '../index'
 
 // #region callbacks
 const cookiesConsent = new CookiesConsent({
@@ -43,10 +43,12 @@ const cookiesConsent = new CookiesConsent({
         {
           name: 'cc_ga',
           code: 'G-XXXXXXXXXX',
+          manageFunction: manageGoogleAnalytics,
         },
         {
           name: 'cc_gtm',
-          code: 'GTM-XXXXXXX',
+          code: 'GTM-PVJH7S4',
+          manageFunction: manageGoogleTagManager,
         },
       ],
     },

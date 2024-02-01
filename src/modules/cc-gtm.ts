@@ -1,5 +1,3 @@
-// ManageGoogleTagManager.ts
-
 import type { LifecycleType } from '../types'
 import type { Cookie } from '../types/cookie.types'
 
@@ -51,7 +49,7 @@ function addGoogleTagManagerScript(code: string) {
   const scriptToCheck2 = document.getElementById('cc-gtm-script-2')
 
   if (!scriptToCheck1) {
-    const script = createScriptElement(`
+    const script = createScriptElement('cc-gtm-script-1', `
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -62,9 +60,10 @@ function addGoogleTagManagerScript(code: string) {
   }
 
   if (!scriptToCheck2) {
-    const noscript = createScriptElement(`
-      <iframe src="https://www.googletagmanager.com/ns.html?id=${code}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    `)
+    const noscript = document.createElement('noscript')
+    noscript.id = 'cc-gtm-script-2'
+    noscript.innerHTML = `
+                <iframe src="https://www.googletagmanager.com/ns.html?id=${code}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
     document.body.insertAdjacentElement('afterbegin', noscript)
   }
 }
@@ -99,8 +98,9 @@ function cleanGoogleTagManagerCookies(path: string) {
   }
 }
 
-function createScriptElement(content: string) {
+function createScriptElement(id: string, content: string) {
   const script = document.createElement('script')
+  script.id = id
   script.innerHTML = content
   return script
 }
