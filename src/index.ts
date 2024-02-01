@@ -316,16 +316,16 @@ export class CookiesConsent {
 
     let checked = ''
     if (this.#answered)
-      checked = status ? ' checked="checked"' : ''
+      checked = status ? ' checked' : ''
     else
-      checked = cookie.checked ? ' checked="checked"' : ''
+      checked = cookie.checked ? ' checked' : ''
 
-    const disabled = cookie.disabled && checked !== '' ? ' disabled="disabled"' : ''
+    const disabled = cookie.disabled && checked !== '' ? 'disabled' : ''
     const name = cookie.name ?? ''
 
     const divStatus = document.createElement('div')
     divStatus.className = 'cc-window-settings-cookie-value'
-    divStatus.innerHTML = `<label class="switch"><input type="checkbox" class="cc-cookie-checkbox" id="cc-cookie-${name}" data-name="${name}" name="cc-cookie-${name}"${checked}${disabled}><span class="slider round"></span></label>`
+    divStatus.innerHTML = `<label class="switch" for="cc-cookie-${name}"><input type="checkbox" class="cc-cookie-checkbox" id="cc-cookie-${name}" data-name="${name}" name="cc-cookie-${name}" ${checked} ${disabled}><span class="slider round"></span></label>`
 
     return divStatus
   }
@@ -501,10 +501,17 @@ export class CookiesConsent {
       document.cookie = `${key}=${value};${expires};${this.params.path};${sameSite};`
     }
 
+    const removeCookie = (key: string) => {
+      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${this.params.path}; ${sameSite};`
+    }
+
     setCookie(this.#cookie_name, value)
 
     Object.entries(this.#cookies_status).forEach(([key, value]) => {
-      value.status && setCookie(key, btoa(`${key}:${Date.now()}`))
+      if (value.status)
+        setCookie(key, btoa(`${key}:${Date.now()}`))
+      else
+        removeCookie(key)
     })
 
     this.#answered = true
@@ -526,12 +533,12 @@ export class CookiesConsent {
         chk_cookie.forEach((checkbox) => {
           const cookieName = checkbox.dataset.name
 
-          Object.entries(this.#cookies_status).forEach(([key, value]) => {
-            if (cookieName && value?.name === cookieName)
-              this.#cookies_status[cookieName].status = checkbox.checked
+          Object.entries(this.#cookies_status).forEach(([, cookie]) => {
+            if (cookieName && cookie?.name === cookieName)
+              cookie.status = checkbox.checked
 
-            if (cookieName && value.parent?.name === cookieName)
-              this.#cookies_status[key].status = checkbox.checked
+            if (cookieName && cookie.parent?.name === cookieName)
+              cookie.status = checkbox.checked
           })
         })
       }
@@ -552,13 +559,12 @@ export class CookiesConsent {
     }
 
     const invokeAnalyticsCallback = (cookieType: AnalyticsType) => {
-      const status = Boolean(this.#cookies_status?.[cookieType].status === true)
+      const cookie = this.#searchCookieStatus(cookieType)
       const manageFunction = cookieType === 'cc_ga' ? manageGoogleAnalytics : manageGoogleTagManager
-      const cookie = this.#searchCookie(cookieType)
 
       if (cookie) {
         try {
-          manageFunction({ lifecycle: type, cookie, status, path: this.params.path })
+          manageFunction({ lifecycle: type, cookie, status: cookie.status, path: this.params.path })
         }
         catch (err) {
           console.error(`ERROR: cc-${cookieType}.js script not loaded`)
