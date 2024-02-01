@@ -9,6 +9,7 @@ import type {
 import { contentDefault } from '../shared/content-default'
 import type { Cookie } from '../types/cookie.types'
 import { nanoid } from '../utils/nanoid.utils'
+import { convertThemeToCSS } from '../utils/theme.utils'
 
 export class CookiesConsent {
   private params: CookiesConsentParams
@@ -39,8 +40,9 @@ export class CookiesConsent {
 
   #insertTheme() {
     if (this.params.theme) {
+      const css = convertThemeToCSS(this.params.theme)
       const style = document.createElement('style')
-      style.innerHTML = this.params.theme
+      style.innerHTML = `:root { ${css} }`
       document.head.appendChild(style)
     }
   }

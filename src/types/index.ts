@@ -1,5 +1,6 @@
 import type { Content } from './content.types'
 import type { Cookie } from './cookie.types'
+import type { Theme } from './theme.types'
 
 export type ButtonType = 'dismiss' | 'accept' | 'reject' | 'info' | 'settings'
 export type PositionType = 'top' | 'top-left' | 'top-right' | 'top-center' | 'bottom' | 'bottom-left' | 'bottom-right' | 'bottom-center'
@@ -51,6 +52,6 @@ export interface CookiesConsentParams {
 
   callback?: Callback
 
-  theme?: string
+  theme?: Theme
 }
 // #endregion params

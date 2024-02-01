@@ -3,7 +3,7 @@
 	--vp-c-brand-1: #d28217;
 	--vp-c-brand-2: #dc9a09;
 
-	--vp-button-brand-bg: var(--vp-c-brand-1);
+	--vp-button-brand-background: var(--vp-c-brand-1);
 
 	--vp-home-hero-name-color: transparent;
 	--vp-home-hero-name-background: -webkit-linear-gradient(120deg, #febe34 30%, #9f6a17);

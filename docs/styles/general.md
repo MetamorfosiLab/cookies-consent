@@ -6,7 +6,7 @@ This document provides an overview of the customizable variables for styling a c
 
 ## Window Styles
 
-- `--cc-window-bg`: Background color of the window.
+- `--cc-window-background`: Background color of the window.
     - **Type:** `color`
     - **Default:** `#fff`
 
@@ -152,7 +152,7 @@ This document provides an overview of the customizable variables for styling a c
 
 ## Accept Button Styles
 
-- `--cc-btn-accept-bg`: Background color of the accept button.
+- `--cc-btn-accept-background`: Background color of the accept button.
     - **Type:** `color`
     - **Default:** `#388E3C`
 
@@ -164,13 +164,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-accept-bg-hover`: Background color of the accept button on hover.
+- `--cc-btn-accept-background-hover`: Background color of the accept button on hover.
     - **Type:** `color`
     - **Default:** `#1B5E20`
 
 ## Reject Button Styles
 
-- `--cc-btn-reject-bg`: Background color of the reject button.
+- `--cc-btn-reject-background`: Background color of the reject button.
     - **Type:** `color`
     - **Default:** `transparent`
 
@@ -182,13 +182,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-reject-bg-hover`: Background color of the reject button on hover.
+- `--cc-btn-reject-background-hover`: Background color of the reject button on hover.
     - **Type:** `color`
     - **Default:** `#FFEBEE`
 
 ## Info Button Styles
 
-- `--cc-btn-info-bg`: Background color of the info button.
+- `--cc-btn-info-background`: Background color of the info button.
     - **Type:** `color`
     - **Default:** `transparent`
 
@@ -200,13 +200,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-info-bg-hover`: Background color of the info button on hover.
+- `--cc-btn-info-background-hover`: Background color of the info button on hover.
     - **Type:** `color`
     - **Default:** `#E0E0E0`
 
 ## Settings Button Styles
 
-- `--cc-btn-settings-bg`: Background color of the settings button.
+- `--cc-btn-settings-background`: Background color of the settings button.
     - **Type:** `color`
     - **Default:** `#9E9E9E`
 
@@ -218,13 +218,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-settings-bg-hover`: Background color of the settings button on hover.
+- `--cc-btn-settings-background-hover`: Background color of the settings button on hover.
     - **Type:** `color`
     - **Default:** `#424242`
 
 ## Settings Select Button Styles
 
-- `--cc-btn-settings-select-bg`: Background color of the settings select button.
+- `--cc-btn-settings-select-background`: Background color of the settings select button.
     - **Type:** `color`
     - **Default:** `transparent`
 
@@ -236,13 +236,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-settings-select-bg-hover`: Background color of the settings select button on hover.
+- `--cc-btn-settings-select-background-hover`: Background color of the settings select button on hover.
     - **Type:** `color`
     - **Default:** `#E0E0E0`
 
 ## Settings Accept Button Styles
 
-- `--cc-btn-settings-accept-bg`: Background color of the settings accept button.
+- `--cc-btn-settings-accept-background`: Background color of the settings accept button.
     - **Type:** `color`
     - **Default:** `#388E3C`
 
@@ -254,13 +254,13 @@ This document provides an overview of the customizable variables for styling a c
     - **Type:** `length`
     - **Default:** `0`
 
-- `--cc-btn-settings-accept-bg-hover`: Background color of the settings accept button on hover.
+- `--cc-btn-settings-accept-background-hover`: Background color of the settings accept button on hover.
     - **Type:** `color`
     - **Default:** `#1B5E20`
 
 ## Dismiss Button Styles
 
-- `--cc-btn-dismiss-bg`: Background color of the dismiss button.
+- `--cc-btn-dismiss-background`: Background color of the dismiss button.
     - **Type:** `color`
     - **Default:** `#ddd`
 
@@ -300,7 +300,7 @@ This document provides an overview of the customizable variables for styling a c
 
 ## Popup Styles
 
-- `--cc-popup-bg`: Background color of the popup.
+- `--cc-popup-background`: Background color of the popup.
     - **Type:** `color`
     - **Default:** `#fff`
 

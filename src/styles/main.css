@@ -1,5 +1,5 @@
 .cc-window {
-	background-color: var(--cc-window-bg, #fff);
+	background-color: var(--cc-window-background, #fff);
 	box-sizing: border-box;
 	padding: var(--cc-window-padding, 24px);
 	z-index: 99999;
@@ -218,68 +218,68 @@
 }
 
 .cc-window .cc-window-buttons button.cc-btn-accept {
-	background-color: var(--cc-btn-accept-bg, #388E3C);
+	background-color: var(--cc-btn-accept-background, #388E3C);
 	color: var(--cc-btn-accept-text-color, #ffffff);
 	border: var(--cc-btn-accept-border, 0);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-accept:hover {
-	background-color: var(--cc-btn-accept-bg-hover, #1B5E20);
+	background-color: var(--cc-btn-accept-background-hover, #1B5E20);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-reject {
-	background-color: var(--cc-btn-reject-bg, transparent);
+	background-color: var(--cc-btn-reject-background, transparent);
 	color: var(--cc-btn-reject-text-color, #C62828);
 	border: var(--cc-btn-reject-border, 0);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-reject:hover {
-	background-color: var(--cc-btn-reject-bg-hover, #FFEBEE);
+	background-color: var(--cc-btn-reject-background-hover, #FFEBEE);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-info {
-	background-color: var(--cc-btn-info-bg, transparent);
+	background-color: var(--cc-btn-info-background, transparent);
 	color: var(--cc-btn-info-text-color, #424242);
 	border: var(--cc-btn-info-border, 0);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-info:hover {
-	background-color: var(--cc-btn-info-bg-hover, #E0E0E0);
+	background-color: var(--cc-btn-info-background-hover, #E0E0E0);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-settings {
-	background-color: var(--cc-btn-settings-bg, #9E9E9E);
+	background-color: var(--cc-btn-settings-background, #9E9E9E);
 	color: var(--cc-btn-settings-text-color, #ffffff);
 	border: var(--cc-btn-settings-border, 0);
 }
 
 .cc-window .cc-window-buttons button.cc-btn-settings:hover {
-	background-color: var(--cc-btn-settings-bg-hover, #424242);
+	background-color: var(--cc-btn-settings-background-hover, #424242);
 }
 
 .cc-window-settings-buttons button.cc-btn-settings-select {
-	background-color: var(--cc-btn-settings-select-bg, transparent);
+	background-color: var(--cc-btn-settings-select-background, transparent);
 	color: var(--cc-btn-settings-select-text-color, #424242);
 	border: var(--cc-btn-settings-select-border, 0);
 }
 
 .cc-window-settings-buttons button.cc-btn-settings-select:hover {
-	background-color: var(--cc-btn-settings-select-bg-hover, #E0E0E0);
+	background-color: var(--cc-btn-settings-select-background-hover, #E0E0E0);
 }
 
 .cc-window-settings-buttons button.cc-btn-settings-accept {
-	background-color: var(--cc-btn-settings-accept-bg, #388E3C);
+	background-color: var(--cc-btn-settings-accept-background, #388E3C);
 	color: var(--cc-btn-settings-accept-text-color, #ffffff);
 	border: var(--cc-btn-settings-accept-border, 0);
 }
 
 .cc-window-settings-buttons button.cc-btn-settings-accept:hover {
-	background-color: var(--cc-btn-settings-accept-bg-hover, #1B5E20);
+	background-color: var(--cc-btn-settings-accept-background-hover, #1B5E20);
 }
 
 #cc-btn-dismiss {
 	font-family: var(--cc-font-family, 'Open Sans',Arial,sans-serif);
-	background-color: var(--cc-btn-dismiss-bg, #ddd);
+	background-color: var(--cc-btn-dismiss-background, #ddd);
 	color: var(--cc-btn-dismiss-text-color, #000);
 	border: var(--cc-btn-dismiss-border, 0);
 	font-size: var(--cc-btn-dismiss-font-size, 14px);
@@ -316,7 +316,7 @@
 
 /* Modal Content/Box */
 .cc-modal-window {
-	background-color: var(--cc-popup-bg, #fff);
+	background-color: var(--cc-popup-background, #fff);
 	color: var(--cc-popup-text-color, #333);
 	margin: 10vh auto; /* 15% from the top and centered */
 	border: var(--cc-window-border, 0);

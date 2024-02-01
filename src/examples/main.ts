@@ -1,5 +1,5 @@
 import '../assets/css/style.css'
-import { CookiesConsent, darkTheme, manageGoogleAnalytics, manageGoogleTagManager } from '../index'
+import { CookiesConsent, contrastTheme, manageGoogleAnalytics, manageGoogleTagManager } from '../index'
 
 // #region callbacks
 const cookiesConsent = new CookiesConsent({
@@ -55,7 +55,7 @@ const cookiesConsent = new CookiesConsent({
   ],
   // #endregion cookies
 
-  theme: darkTheme,
+  theme: contrastTheme,
 })
 // #endregion callbacks
 
