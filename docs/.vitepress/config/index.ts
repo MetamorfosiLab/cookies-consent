@@ -48,6 +48,15 @@ export default defineConfig({
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024-present Metamorfosi Lab',
     },
+
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: '633MBIAVE1',
+        apiKey: '1e50e6290b35356dfa57b649d23828a9',
+        indexName: 'cookies-consent',
+      },
+    },
   },
 })
 
